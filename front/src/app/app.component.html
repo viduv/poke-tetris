@@ -1,0 +1,12 @@
+<div class="content">
+  <div class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Message</mat-label>
+      <textarea matInput class="input" #area></textarea>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="write(area.value)">Envoyer</button>
+  </div>
+  <div class="chat">
+    <span *ngFor="let message of getMessage() | async">{{message}}</span>
+  </div>
+</div>

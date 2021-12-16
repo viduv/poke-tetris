@@ -1,32 +1,40 @@
-const app = require('express')();
-const http = require('http').Server(app);
-const io = require('socket.io')(http, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+express = require('express');
+http = require('http');
+socketio = require('socket.io');
+
+class Application {
+
+    http;
+    io;
+
+    chat = [];
+
+    constructor() {
+        this.http = new http.Server(express());
+        this.io = socketio(this.http, {
+            cors: {
+                origin: "*",
+                methods: ["GET", "POST"]
+            }
+        })
     }
-});
 
-const chat = [];
+    run() {
+        this.io.on("connection", socket => {
+            socket.on("sendMessage", message => {
+                this.chat.push(message);
+                this.io.emit("chat", message);
+            });
+            this.io.emit("initChat", this.chat);
 
-io.on("connection", socket => {
+            console.log(`Socket ${socket.id} has connected`);
+        });
+        this.http.listen(4444, () => {
+            console.log('Listening on port 4444');
+        });
+    }
+}
 
-    socket.on("getChat", () => {
- //     io.emit("chat", chat);
-    });
 
-    socket.on("sendMessage", message => {
-        chat.push(message);
-        console.log("recieve", message);
-        io.emit("chat", message);
-      });
+new Application().run();
 
-      io.emit("chat", "");
-
-      console.log(`Socket ${socket.id} has connected`);
-
-  });
-
-  http.listen(4444, () => {
-    console.log('Listening on port 4444');
-  });
