@@ -6,8 +6,8 @@ export const initialState: ChatState = {
   messages: []
 }
 
-export const chatReducer = createReducer(initialState, on(ChatAction.recieveMessage, (state, message) => ({
+export const chatReducer = createReducer(initialState, on(ChatAction.recieveMessage, (state, messages) => ({
   ...state,
-    messages: [...state.messages, message.message]
+    messages: messages.messages
   })
 ));

@@ -6,37 +6,25 @@ import { ChatState } from "./chat-store/chat.state";
 import { recieveMessage } from "./chat-store/chat.actions";
 import { selectChatMessages } from "./chat-store/chat.selector";
 import {Observable, Subscription, take} from "rxjs";
+import {ChatService} from "./chat.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent {
   title = 'red-tetris';
 
-  chatSubscription: Subscription;
 
-  constructor(private socket: Socket, private store: Store<ChatState>) {
-    socket.fromEvent<string[]>("initChat")
-      .pipe(take(1))
-      .subscribe(messages =>
-        messages.forEach(message =>
-          store.dispatch(recieveMessage({message: message}))));
-
-    this.chatSubscription = socket.fromEvent<string>("chat")
-      .subscribe(message => store.dispatch(recieveMessage({message: message})));
+  constructor(private chatService: ChatService) {
   }
 
-  getMessage(): Observable<string[]> {
-    return this.store.select((selectChatMessages));
+  getMessages(): Observable<string[]> {
+    return this.chatService.getMessages()
   }
 
   write(message: string): void {
-    this.socket.emit("sendMessage", message);
+    this.chatService.sendMessage(message);
   };
-
-  ngOnDestroy(): void {
-    this.chatSubscription.unsubscribe();
-  }
 }

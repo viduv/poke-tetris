@@ -1,13 +1,14 @@
 express = require('express');
 http = require('http');
 socketio = require('socket.io');
+let { ReceiveMessageOut } = require("./web/out/ReceiveMessageOut");
+let { ReceiveMessageIn } = require("./web/in/ReceiveMessageIn");
+const { ChatService } = require('./application/service/ChatService.js');
 
 class Application {
 
     http;
     io;
-
-    chat = [];
 
     constructor() {
         this.http = new http.Server(express());
@@ -20,12 +21,12 @@ class Application {
     }
 
     run() {
+        let chatService = new ChatService();
+        let receiveMessageOut = new ReceiveMessageOut(this.io, chatService);
+        let receiveMessageIn = new ReceiveMessageIn(chatService, receiveMessageOut);
         this.io.on("connection", socket => {
-            socket.on("sendMessage", message => {
-                this.chat.push(message);
-                this.io.emit("chat", message);
-            });
-            this.io.emit("initChat", this.chat);
+            receiveMessageIn.initConnection(socket);
+            this.io.emit("initChat", chatService.getChat().getMessages());
 
             console.log(`Socket ${socket.id} has connected`);
         });
