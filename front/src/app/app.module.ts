@@ -12,12 +12,21 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { chatReducer } from "./chat-store/chat.reducer"
 import { key } from "./chat-store/chat.state";
 import { environment } from '../environments/environment';
+import { MainMenuComponent } from './main-menu/main-menu.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogCreateGameComponent } from './dialog-create-game/dialog-create-game.component';
+import { DialogJoinGameComponent } from './dialog-join-game/dialog-join-game.component';
+import {MatSelectModule} from '@angular/material/select';
+import {preGameReducer} from "./stores/pre-game-store/pre-game.reducer";
 
-const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
+const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MainMenuComponent,
+    DialogCreateGameComponent,
+    DialogJoinGameComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +34,9 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     BrowserAnimationsModule,
     MatButtonModule,
     MatInputModule,
-    StoreModule.forRoot({ chat: chatReducer }, {}),
+    MatDialogModule,
+    MatSelectModule,
+    StoreModule.forRoot({ chat: chatReducer, preGame: preGameReducer }, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

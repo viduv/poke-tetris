@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Creer une partie</h1>
+<mat-dialog-content>
+  <div class="form">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Nom de la partie</mat-label>
+      <input matInput>
+    </mat-form-field>
+    <mat-form-field class="example-full-width" appearance="outline">
+      <mat-label>Votre pseudo</mat-label>
+      <input matInput>
+    </mat-form-field>
+  </div>
+  <div class="games-list">
+    <h4>Liste des parties publique</h4>
+    <mat-form-field appearance="fill">
+      <mat-label>Liste des parties publique</mat-label>
+      <mat-select>
+        <mat-option *ngFor="let game of getGames() | async">game.getDisplayName()</mat-option>
+      </mat-select>
+    </mat-form-field>  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button color="link" (click)="closeDialog()">Annuler</button>
+  <button mat-raised-button color="primary">Creer</button>
+</mat-dialog-actions>
