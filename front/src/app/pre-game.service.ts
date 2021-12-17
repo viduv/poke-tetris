@@ -17,11 +17,11 @@ export class PreGameService {
   }
 
   protected initSocket(): void{
-    this.socket.fromEvent<PreGame[]>("gamesList")
+    this.socket.fromEvent<[]>("gamesList")
       .subscribe(games => this.store.dispatch(receiveGameList({games: games})));
   }
 
-  public getGames(): Observable<PreGame[]> {
+  public getGames(): Observable<[]> {
     return this.store.select(selectPreGameGames);
   }
 }

@@ -19,7 +19,8 @@ import { DialogJoinGameComponent } from './dialog-join-game/dialog-join-game.com
 import {MatSelectModule} from '@angular/material/select';
 import {preGameReducer} from "./stores/pre-game-store/pre-game.reducer";
 
-const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
+//const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
+const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
   declarations: [
@@ -36,7 +37,7 @@ const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
     MatInputModule,
     MatDialogModule,
     MatSelectModule,
-    StoreModule.forRoot({ chat: chatReducer, preGame: preGameReducer }, {}),
+    StoreModule.forRoot({ preGame: preGameReducer }, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

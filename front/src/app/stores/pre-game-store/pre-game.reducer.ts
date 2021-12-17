@@ -1,6 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import {PreGameState} from "./pre-game.state";
 import * as PreGameAction from './pre-game.actions';
+import {PreGame} from "./pre-game";
 
 export const initialState: PreGameState = {
   games: []

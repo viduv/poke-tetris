@@ -17,14 +17,6 @@ export class AppComponent {
   title = 'red-tetris';
 
 
-  constructor(private chatService: ChatService) {
+  constructor() {
   }
-
-  getMessages(): Observable<string[]> {
-    return this.chatService.getMessages()
-  }
-
-  write(message: string): void {
-    this.chatService.sendMessage(message);
-  };
 }
