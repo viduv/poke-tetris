@@ -5,8 +5,8 @@ class GameService {
 
     constructor() {}
 
-    addGame(name, playername, playerservice) {
-        let newGame = new Game(name, "CREATE", playerservice.addPlayer(playername, true))
+    addGame(name, playername, playerservice, isPublic) {
+        let newGame = new Game(name, "CREATE", playerservice.addPlayer(playername, true), isPublic)
         this.games.push(newGame)
         return newGame
     }

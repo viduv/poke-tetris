@@ -35,8 +35,8 @@ class Application {
         let playerService = new PlayerService()
 
         // 2 lines below for testing purpose
-        gameService.addGame("Game1", "Player1", playerService);
-        gameService.addGame("Game2", "Player2", playerService);
+        gameService.addGame("Game1", "Player1", playerService, true);
+        gameService.addGame("Game2", "Player2", playerService, false);
 
 
         this.io.on("connection", socket => {
