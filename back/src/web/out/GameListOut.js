@@ -10,9 +10,11 @@ class GameListOut {
 
     initConnection() {
         this.io.emit("gamesList", this.GameService.getGames().map( game => {
-            gameId : game.id
-            gameName : game.gameName
-            ownerName : game.players.find(player => player.isOwner).name
+            let games = {}
+            games["gameId"] = game.id
+            games["gameName"] = game.name
+            games["ownerName"] = game.players.find(player => player.isOwner).name
+            return games
         }));
     }
 
