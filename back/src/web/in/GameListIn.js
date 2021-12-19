@@ -7,7 +7,6 @@ class GameListIn {
 
     initConnection(socket) {
         socket.on("gamesList", () => {
-            console.log( "GAMELIST SOCKET ON")
             this.GameListOut.initConnection();
         });
     }

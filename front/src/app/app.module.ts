@@ -9,8 +9,6 @@ import {MatInputModule} from '@angular/material/input';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-import { chatReducer } from "./chat-store/chat.reducer"
-import { key } from "./chat-store/chat.state";
 import { environment } from '../environments/environment';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import {MatDialogModule} from '@angular/material/dialog';

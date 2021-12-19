@@ -15,7 +15,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Liste des parties publique</mat-label>
       <mat-select>
-        <mat-option *ngFor="let game of getGames() | async">game.getDisplayName()</mat-option>
+        <mat-option *ngFor="let game of x | async">{{game.gameName}}</mat-option>
       </mat-select>
     </mat-form-field>  </div>
 </mat-dialog-content>

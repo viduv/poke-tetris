@@ -1,6 +1,5 @@
-import {PreGame} from "./pre-game";
 
 export interface PreGameState {
-  games: [];
+  games: string[];
 }
-export const preGameKey = "pre-game"
+export const key = "preGame"

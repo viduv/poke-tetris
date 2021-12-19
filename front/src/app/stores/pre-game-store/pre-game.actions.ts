@@ -3,5 +3,5 @@ import {PreGame} from "./pre-game";
 
 export const receiveGameList = createAction(
   '[Tetris] Recieve games list',
-  props<{ games: [] }>()
+  props<{ games: string[] }>()
 );

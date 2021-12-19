@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {DialogCreateGameComponent} from "../dialog-create-game/dialog-create-game.component";
 import {DialogJoinGameComponent} from "../dialog-join-game/dialog-join-game.component";
+import {PreGameService} from "../pre-game.service";
 
 @Component({
   selector: 'app-main-menu',
@@ -10,7 +11,7 @@ import {DialogJoinGameComponent} from "../dialog-join-game/dialog-join-game.comp
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private preGameService: PreGameService) { }
 
   ngOnInit(): void {
   }
@@ -21,6 +22,7 @@ export class MainMenuComponent implements OnInit {
 
   openDialogJoin(): void {
     this.dialog.open(DialogJoinGameComponent, { width: '60%' });
+   //this.preGameService.getGames();
   }
 
 }
