@@ -22,7 +22,6 @@ export class MainMenuComponent implements OnInit {
 
   openDialogJoin(): void {
     this.dialog.open(DialogJoinGameComponent, { width: '60%' });
-   //this.preGameService.getGames();
   }
 
 }

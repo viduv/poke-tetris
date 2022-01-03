@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {Socket} from "ngx-socket-io";
 import {Store} from "@ngrx/store";
 import {PreGameState} from "./stores/pre-game-store/pre-game.state";
+import {PreGame} from "./stores/pre-game-store/pre-game";
 import {receiveGameList} from "./stores/pre-game-store/pre-game.actions";
 import {Observable} from "rxjs";
 import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
@@ -23,7 +24,7 @@ export class PreGameService {
       });
   }
 
-  public getGames(): Observable<string[]> {
+  public getGames(): Observable<PreGame[]> {
     this.initSocket();
     this.socket.emit("gamesList")
     return this.store.select(selectPreGameGames);

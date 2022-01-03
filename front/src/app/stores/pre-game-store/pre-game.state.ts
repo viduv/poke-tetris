@@ -1,5 +1,6 @@
+import { PreGame } from "./pre-game"
 
 export interface PreGameState {
-  games: string[];
+  games: Array<PreGame>;
 }
 export const key = "preGame"
