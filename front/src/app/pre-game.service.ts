@@ -29,4 +29,5 @@ export class PreGameService {
     this.socket.emit("gamesList")
     return this.store.select(selectPreGameGames);
   }
+
 }

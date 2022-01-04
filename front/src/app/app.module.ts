@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,7 +25,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     AppComponent,
     MainMenuComponent,
     DialogCreateGameComponent,
-    DialogJoinGameComponent
+    DialogJoinGameComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -35,6 +36,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MatInputModule,
     MatDialogModule,
     MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({ preGame: preGameReducer }, {}),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

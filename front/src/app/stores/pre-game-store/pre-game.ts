@@ -44,8 +44,6 @@ export class PreGame {
     this._isPublic = value;
   }
 
-
-
   public getDisplayName(): string {
     return this._gameName + " | " + this._ownerName;
   }

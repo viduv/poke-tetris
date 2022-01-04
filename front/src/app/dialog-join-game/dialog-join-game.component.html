@@ -1,27 +1,31 @@
-<h1 mat-dialog-title>Rejoindre une partie</h1>
+<h1  mat-dialog-title>Rejoindre une partie</h1>
 <mat-dialog-content>
+  <form [formGroup]='gamesForm'>
   <div class="form">
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Nom de la partie</mat-label>
-      <input matInput>
+      <input matInput formControlName="gameName">
     </mat-form-field>
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Votre pseudo</mat-label>
-      <input matInput>
+      <input matInput formControlName="userName">
     </mat-form-field>
   </div>
   <div class="games-list">
     <h4>Liste des parties publique</h4>
     <mat-form-field appearance="fill">
       <mat-label>Liste des parties publique</mat-label>
-      <mat-select>
-        <mat-option *ngFor="let game of Games  | async" [value]="game.gameName">
-          {{game.gameName}}
+      <mat-select formControlName="gameSelect">
+        <mat-option *ngFor="let publicgame of PublicGames  | async" [value]="publicgame.gameName">
+          {{publicgame.gameName}}
         </mat-option>
       </mat-select>
-    </mat-form-field>  </div>
+    </mat-form-field>  
+  </div>
+</form>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
   <button mat-stroked-button color="link" (click)="closeDialog()">Annuler</button>
-  <button mat-raised-button color="primary">Rejoindre</button>
+  <button mat-raised-button color="primary" (click)="joinGame()" [disabled]="isDisabled()">Rejoindre</button>
 </mat-dialog-actions>

@@ -1,8 +1,17 @@
+// Angular Import 
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
+// Material Import
 import {MatDialogRef} from "@angular/material/dialog";
+// Ngrx Import
+import {Store} from "@ngrx/store";
+// Game Import
 import {PreGameService} from "../pre-game.service";
-import {Observable, of, map, from} from "rxjs";
-import {filter} from "rxjs/operators"
+import { PreGame } from "../stores/pre-game-store/pre-game";
+import {PreGameState} from "../stores/pre-game-store/pre-game.state";
+import {selectPreGamePublicGames} from "../stores/pre-game-store/pre-game.selector";
+// Rxjs Import
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-dialog-join-game',
@@ -10,20 +19,39 @@ import {filter} from "rxjs/operators"
   styleUrls: ['./dialog-join-game.component.scss']
 })
 export class DialogJoinGameComponent implements OnInit {
-  publicGames : Observable<any> = of("")
-  Games : Observable<any> = of("")
+  PublicGames : Observable<Array<PreGame>> = new Observable<Array<PreGame>>();
+  Games : Observable<Array<PreGame>> = new Observable<Array<PreGame>>();
+  gamesForm: FormGroup = new FormGroup({
+    gameName : new FormControl(""),
+    userName : new FormControl(""),
+    gameSelect : new FormControl(""),
+  })
 
-  constructor(public dialogRef: MatDialogRef<DialogJoinGameComponent>, private preGameService: PreGameService) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogJoinGameComponent>,
+    private preGameService: PreGameService,
+    protected store: Store<PreGameState>,
+    private fb: FormBuilder
+    ) {}
 
   ngOnInit(): void {
 
     this.Games = this.preGameService.getGames()
-    this.Games.subscribe(res => console.log(res))
-    this.publicGames.subscribe(res => console.log(res))
+    this.PublicGames = this.store.select(selectPreGamePublicGames)
+  }
+
+  joinGame() : void {
+    this.dialogRef.close();
   }
 
   closeDialog(): void {
     this.dialogRef.close();
+  }
+
+  // Disabled Submit Form button if no value
+  isDisabled(): boolean {
+    let isDisabled : boolean = this.gamesForm.value.gameName && this.gamesForm.value.userName || this.gamesForm.value.gameSelect ? false : true
+    return isDisabled
   }
 
 }
