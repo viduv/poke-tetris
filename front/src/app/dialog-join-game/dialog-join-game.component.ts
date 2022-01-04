@@ -1,6 +1,6 @@
 // Angular Import 
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup} from '@angular/forms';
 // Material Import
 import {MatDialogRef} from "@angular/material/dialog";
 // Ngrx Import
@@ -10,6 +10,7 @@ import {PreGameService} from "../pre-game.service";
 import { PreGame } from "../stores/pre-game-store/pre-game";
 import {PreGameState} from "../stores/pre-game-store/pre-game.state";
 import {selectPreGamePublicGames} from "../stores/pre-game-store/pre-game.selector";
+import {flushState} from "../stores/pre-game-store/pre-game.actions"
 // Rxjs Import
 import {Observable} from "rxjs";
 
@@ -31,11 +32,9 @@ export class DialogJoinGameComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogJoinGameComponent>,
     private preGameService: PreGameService,
     protected store: Store<PreGameState>,
-    private fb: FormBuilder
     ) {}
 
   ngOnInit(): void {
-
     this.Games = this.preGameService.getGames()
     this.PublicGames = this.store.select(selectPreGamePublicGames)
   }
@@ -45,6 +44,8 @@ export class DialogJoinGameComponent implements OnInit {
   }
 
   closeDialog(): void {
+    this.store.dispatch(flushState())
+    this.preGameService.flushGamesListSocket()
     this.dialogRef.close();
   }
 

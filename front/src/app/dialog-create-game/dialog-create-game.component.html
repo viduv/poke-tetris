@@ -1,15 +1,17 @@
 <h1 mat-dialog-title>Creer une partie</h1>
 <mat-dialog-content>
+  <form [formGroup]="createGameForm">
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Nom de la partie</mat-label>
-    <input matInput>
+    <input matInput formControlName="gameName">
   </mat-form-field>
   <mat-form-field class="example-full-width" appearance="outline">
     <mat-label>Votre pseudo</mat-label>
-    <input matInput>
+    <input matInput formControlName="userName">
   </mat-form-field>
+</form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button color="link" (click)="closeDialog()">Annuler</button>
-  <button mat-raised-button color="primary">Creer</button>
+  <button mat-raised-button color="primary" (click)="createGame()" [disabled]="isDisabled()">Creer</button>
 </mat-dialog-actions>

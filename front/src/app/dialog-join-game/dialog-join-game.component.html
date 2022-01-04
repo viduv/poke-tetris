@@ -17,7 +17,7 @@
       <mat-label>Liste des parties publique</mat-label>
       <mat-select formControlName="gameSelect">
         <mat-option *ngFor="let publicgame of PublicGames  | async" [value]="publicgame.gameName">
-          {{publicgame.gameName}}
+          Nom : {{ publicgame.gameName }} | Responsable : {{ publicgame.ownerName }}
         </mat-option>
       </mat-select>
     </mat-form-field>  

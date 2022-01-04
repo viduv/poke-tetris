@@ -6,8 +6,13 @@ export const initialState: PreGameState = {
   games: []
 }
 
-export const preGameReducer = createReducer(initialState, on(PreGameAction.receiveGameList, (state, games) => ({
+export const preGameReducer = createReducer(initialState, 
+  on(PreGameAction.receiveGameList, (state, games) => ({
     ...state,
     games: games.games
-  })
-));
+  })),
+  on(PreGameAction.flushState, (state) => ({
+    ...state,
+    games: []
+  }))
+);
