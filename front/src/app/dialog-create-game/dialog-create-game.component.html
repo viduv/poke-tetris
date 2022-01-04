@@ -9,6 +9,10 @@
     <mat-label>Votre pseudo</mat-label>
     <input matInput formControlName="userName">
   </mat-form-field>
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style" formControlName="gameIsPublic">
+    <mat-button-toggle value="False">Privée</mat-button-toggle>
+    <mat-button-toggle value="True">Publique</mat-button-toggle>
+  </mat-button-toggle-group>
 </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

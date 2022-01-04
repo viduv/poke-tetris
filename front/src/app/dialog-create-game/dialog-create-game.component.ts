@@ -14,6 +14,7 @@ export class DialogCreateGameComponent implements OnInit {
   createGameForm: FormGroup = new FormGroup({
     gameName: new FormControl(""),
     userName: new FormControl(""),
+    gameIsPublic: new FormControl(""),
   })
 
   constructor(public dialogRef: MatDialogRef<DialogCreateGameComponent>) { }
@@ -32,7 +33,7 @@ export class DialogCreateGameComponent implements OnInit {
 
     // Disabled Submit Form button if no value
     isDisabled(): boolean {
-      let isDisabled : boolean = this.createGameForm.value.gameName && this.createGameForm.value.userName ? false : true
+      let isDisabled : boolean = this.createGameForm.value.gameName && this.createGameForm.value.userName && this.createGameForm.value.gameIsPublic ? false : true
       return isDisabled
     }
 

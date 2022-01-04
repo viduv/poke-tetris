@@ -3,13 +3,15 @@ export class PreGame {
   private _gameName: string;
   private _ownerName: string;
   private _isPublic: boolean;
+  private _gameState: string;
 
 
-  constructor(gameId: string, gameName: string, ownerName: string, isPublic: boolean) {
+  constructor(gameId: string, gameName: string, ownerName: string, isPublic: boolean, gameState: string) {
     this._gameId = gameId;
     this._gameName = gameName;
     this._ownerName = ownerName;
     this._isPublic = isPublic;
+    this._gameState = gameState;
   }
 
   get gameId(): string {
@@ -42,6 +44,14 @@ export class PreGame {
   
   set isPublic(value: boolean) {
     this._isPublic = value;
+  }
+
+  get gameState(): string {
+    return this._gameState
+  }
+
+  set gameState(value: string){
+    this._gameState = value;
   }
 
   public getDisplayName(): string {

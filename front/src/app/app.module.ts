@@ -12,9 +12,11 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatRadioModule} from '@angular/material/radio';
 import { DialogCreateGameComponent } from './dialog-create-game/dialog-create-game.component';
 import { DialogJoinGameComponent } from './dialog-join-game/dialog-join-game.component';
 import {MatSelectModule} from '@angular/material/select';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {preGameReducer} from "./stores/pre-game-store/pre-game.reducer";
 
 //const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
@@ -36,6 +38,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MatInputModule,
     MatDialogModule,
     MatSelectModule,
+    MatRadioModule,
+    MatButtonToggleModule,
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ preGame: preGameReducer }, {}),

@@ -40,6 +40,7 @@ export class DialogJoinGameComponent implements OnInit {
   }
 
   joinGame() : void {
+    this.preGameService.flushGamesListSocket()
     this.dialogRef.close();
   }
 
@@ -51,7 +52,7 @@ export class DialogJoinGameComponent implements OnInit {
 
   // Disabled Submit Form button if no value
   isDisabled(): boolean {
-    let isDisabled : boolean = this.gamesForm.value.gameName && this.gamesForm.value.userName || this.gamesForm.value.gameSelect ? false : true
+    let isDisabled : boolean = this.gamesForm.value.gameName && this.gamesForm.value.userName || this.gamesForm.value.gameSelect && this.gamesForm.value.userName ? false : true
     return isDisabled
   }
 

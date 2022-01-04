@@ -5,4 +5,4 @@ export const selectPreGame: MemoizedSelector<Object, PreGameState> = createFeatu
 
 export const selectPreGameGames = createSelector(selectPreGame, (state: PreGameState) => state.games);
 
-export const selectPreGamePublicGames = createSelector( selectPreGame, (state : PreGameState) => state.games.filter( game => game.isPublic));
+export const selectPreGamePublicGames = createSelector( selectPreGame, (state : PreGameState) => state.games.filter( game => game.isPublic && game.gameState == "CREATE"));
