@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {MainMenuComponent} from "./main-menu/main-menu.component";
+import { MainMenuComponent } from "./main-menu/main-menu.component";
+import { GameComponent} from './game/game.component';
 
 const routes: Routes = [
   { path: '', component: MainMenuComponent },
+  { path: 'game', component: GameComponent},
 ];
 
 @NgModule({

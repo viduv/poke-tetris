@@ -3,7 +3,7 @@ import {PreGameState} from "./pre-game.state";
 import * as PreGameAction from './pre-game.actions';
 
 export const initialState: PreGameState = {
-  games: []
+  games: [],
 }
 
 export const preGameReducer = createReducer(initialState, 

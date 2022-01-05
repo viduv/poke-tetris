@@ -9,6 +9,8 @@ const { ChatService } = require('./application/service/ChatService.js');
 const { PlayerService } = require('./application/service/PlayerService.js');
 const { GameService } = require('./application/service/GameService');
 const { CreateGameIn } = require('./web/in/CreateGameIn');
+const { GameIn } = require('./web/in/GameIn');
+
 
 class Application {
 
@@ -35,6 +37,7 @@ class Application {
         let gameListIn = new GameListIn(gameListOut)
         let playerService = new PlayerService()
         let createGameIn = new CreateGameIn(gameListOut, gameService, playerService);
+        let gameIn = new GameIn();
 
         // 2 lines below for testing purpose
         gameService.addGame("Game1", "Player1", playerService, true);
@@ -45,6 +48,8 @@ class Application {
             receiveMessageIn.initConnection(socket);
             gameListIn.initConnection(socket);
             createGameIn.initConnection(socket);
+            gameIn.initConnection(socket);
+            
             this.io.emit("initChat", chatService.getChat().getMessages());
 
             console.log(`Socket ${socket.id} has connected`);
