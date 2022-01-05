@@ -33,8 +33,8 @@ class Application {
         let gameService = new GameService();
         let gameListOut = new GameListOut(this.io, gameService)
         let gameListIn = new GameListIn(gameListOut)
-        let createGameIn = new CreateGameIn(gameListOut, gameService);
         let playerService = new PlayerService()
+        let createGameIn = new CreateGameIn(gameListOut, gameService, playerService);
 
         // 2 lines below for testing purpose
         gameService.addGame("Game1", "Player1", playerService, true);

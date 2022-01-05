@@ -1,17 +1,19 @@
 class CreateGameIn {
 	GameListOut;
 	GameService;
+	PlayerService;
     
-	constructor(gameListOut, GameService) {
+	constructor(gameListOut, gameService, playerService) {
 	    this.GameListOut = gameListOut;
-	    this.GameService = GameService;
+	    this.GameService = gameService;
+	    this.PlayerService = playerService;
 	}
     
 	initConnection(socket) {
 	    socket.on("createGame", (data) => {
 		    console.log(data)
-	//	this.GameService.addGame()
-	//	this.GameListOut.refreshGameList();
+		this.GameService.addGame(data.gameName, data.playerName, this.PlayerService, data.gameIsPublic)
+		this.GameListOut.refreshGameList();
 	    });
 	}
     }

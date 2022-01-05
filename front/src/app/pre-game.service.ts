@@ -12,23 +12,27 @@ import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
 })
 export class PreGameService {
 
-  observable: Observable<any> = of("")
+  gamesList: Observable<Array<PreGame>> = new Observable()
   sub: Subscription = new Subscription()
 
   constructor(protected socket: Socket, protected store: Store<PreGameState>) {
   }
 
-  protected initSocket(): void {
-    this.observable = new Observable((observer) => 
-      this.socket.on('gamesList', (data : any) => observer.next(data))
+  protected initGamesListSocket(): void {
+    this.gamesList = new Observable((observer) => 
+      this.socket.on('gamesList', (data : Array<PreGame>) => observer.next(data))
     );
-    this.sub = this.observable.subscribe(games => this.store.dispatch(receiveGameList({games: games})))
+    this.sub = this.gamesList.subscribe(games => this.store.dispatch(receiveGameList({games: games})))
   }
 
   public getGames(): Observable<PreGame[]> {
-    this.initSocket();
+    this.initGamesListSocket();
     this.socket.emit("gamesList")
     return this.store.select(selectPreGameGames);
+  }
+
+  public CreateGame(game: object): void {
+    this.socket.emit("createGame", game)
   }
 
   public flushGamesListSocket(): void {
