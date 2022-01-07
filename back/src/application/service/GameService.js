@@ -11,6 +11,12 @@ class GameService {
         return newGame
     }
 
+    addPlayerToGame(playername, gameId, playerservice) {
+        let player = playerservice.addPlayer(playername, false)
+        this.games.filter(games => games.id === gameId)[0].players.push(player)
+        return player;
+    }
+
     getGame(id){
         return this.games.filter(item => item.id === id)
     }

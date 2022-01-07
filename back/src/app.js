@@ -10,7 +10,9 @@ const { PlayerService } = require('./application/service/PlayerService.js');
 const { GameService } = require('./application/service/GameService');
 const { CreateGameIn } = require('./web/in/CreateGameIn');
 const { GameIn } = require('./web/in/GameIn');
+const { JoinGameIn } = require('./web/in/JoinGameIn');
 const { SelfOut } = require('./web/out/SelfOut');
+const { join } = require('path');
 
 
 class Application {
@@ -39,6 +41,7 @@ class Application {
         let playerService = new PlayerService()
         let selfOut = new SelfOut(this.io);
         let createGameIn = new CreateGameIn(gameListOut, gameService, playerService, selfOut);
+        let joinGameIn = new JoinGameIn(gameService, playerService, selfOut);
         let gameIn = new GameIn();
 
         // 2 lines below for testing purpose
@@ -51,6 +54,7 @@ class Application {
             gameListIn.initConnection(socket);
             createGameIn.initConnection(socket);
             gameIn.initConnection(socket);
+            joinGameIn.initConnection(socket);
             
             this.io.emit("initChat", chatService.getChat().getMessages());
 

@@ -3,12 +3,12 @@
   <form [formGroup]='gamesForm'>
   <div class="form">
     <mat-form-field class="example-full-width" appearance="outline">
-      <mat-label>Nom de la partie</mat-label>
-      <input matInput formControlName="gameName">
+      <mat-label> Id de la partie</mat-label>
+      <input matInput formControlName="gameId">
     </mat-form-field>
     <mat-form-field class="example-full-width" appearance="outline">
       <mat-label>Votre pseudo</mat-label>
-      <input matInput formControlName="userName">
+      <input matInput formControlName="playerName">
     </mat-form-field>
   </div>
   <div class="games-list">
@@ -16,7 +16,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Liste des parties publique</mat-label>
       <mat-select formControlName="gameSelect">
-        <mat-option *ngFor="let publicgame of PublicGames  | async" [value]="publicgame.gameName">
+        <mat-option *ngFor="let publicgame of PublicGames  | async" [value]="publicgame.gameId">
           Nom : {{ publicgame.gameName }} | Responsable : {{ publicgame.ownerName }}
         </mat-option>
       </mat-select>

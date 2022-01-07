@@ -23,8 +23,8 @@ export class DialogJoinGameComponent implements OnInit {
   PublicGames : Observable<Array<PreGame>> = new Observable<Array<PreGame>>();
   Games : Observable<Array<PreGame>> = new Observable<Array<PreGame>>();
   gamesForm: FormGroup = new FormGroup({
-    gameName : new FormControl(""),
-    userName : new FormControl(""),
+    gameId : new FormControl(""),
+    playerName : new FormControl(""),
     gameSelect : new FormControl(""),
   })
 
@@ -41,7 +41,14 @@ export class DialogJoinGameComponent implements OnInit {
 
   joinGame() : void {
     this.preGameService.flushGamesListSocket()
-    this.preGameService.JoinGame(this.gamesForm.value)
+    if(this.gamesForm.value.gameSelect){
+      console.log(this.gamesForm.value)
+      this.preGameService.JoinGame(
+        {
+          gameId: this.gamesForm.value.gameSelect, 
+          playerName: this.gamesForm.value.playerName})
+        }
+    //this.preGameService.JoinGame(this.gamesForm.value)
     this.dialogRef.close();
   }
 
@@ -53,7 +60,7 @@ export class DialogJoinGameComponent implements OnInit {
 
   // Disabled Submit Form button if no value
   isDisabled(): boolean {
-    let isDisabled : boolean = this.gamesForm.value.gameName && this.gamesForm.value.userName || this.gamesForm.value.gameSelect && this.gamesForm.value.userName ? false : true
+    let isDisabled : boolean = this.gamesForm.value.gameId && this.gamesForm.value.playerName || this.gamesForm.value.gameSelect && this.gamesForm.value.playerName ? false : true
     return isDisabled
   }
 

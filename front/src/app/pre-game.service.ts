@@ -3,7 +3,7 @@ import {Socket} from "ngx-socket-io";
 import {Store} from "@ngrx/store";
 import {PreGameState} from "./stores/pre-game-store/pre-game.state";
 import {PreGame} from "./stores/pre-game-store/pre-game";
-import {receiveGameList} from "./stores/pre-game-store/pre-game.actions";
+import {flushState, receiveGameList} from "./stores/pre-game-store/pre-game.actions";
 import {Observable, Subscription} from "rxjs";
 import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
 import {GameState} from "./stores/game-store/game.state"
@@ -47,7 +47,11 @@ export class PreGameService {
       this.socket.on("createGame", (data : Self) => observer.next(data))
     );
     this.selfSub = this.self.subscribe(self => {
+        // populate self
         this.GameStore.dispatch(populateSelf({self: self}))
+        // flush Pre Game State
+        this.preGameStore.dispatch(flushState())
+        // Unsubscribe
         this.flushCreateGameSocket()
     }
     )
@@ -68,8 +72,12 @@ export class PreGameService {
       this.socket.on("joinGame", (data : Self) => observer.next(data))
     );
     this.selfSub = this.self.subscribe(self => {
+      // populate self
       this.GameStore.dispatch(populateSelf({self : self}))
-    this.flushJoinGameSocket() 
+      // flush Pre game State
+      this.preGameStore.dispatch(flushState())
+      // Unsubscribe
+      this.flushJoinGameSocket()
     })
   }
 
