@@ -12,9 +12,9 @@ export const initialState: GameState = {
     player: [],
   },
   self: {
-    uuid: "",
+    id: "",
     name: "",
-    gameId: "",
+    isOwner: true,
   }
 }
 
@@ -22,5 +22,9 @@ export const GameReducer = createReducer(initialState,
   on(GameAction.flushState, (state) => ({
     ...state,
     games: []
+  })),
+  on(GameAction.populateSelf, (state, self) => ({
+    ...state,
+    self: self.self,
   }))
 );

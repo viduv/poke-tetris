@@ -1,9 +1,15 @@
 // Angular Import 
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup} from '@angular/forms';
+import { FormControl, FormGroup} from '@angular/forms';
 // Material Import
 import {MatDialogRef} from "@angular/material/dialog";
 import { PreGameService } from '../pre-game.service';
+// Ngrx Import
+import { Store } from '@ngrx/store';
+// State Import
+import { GameState } from '../stores/game-store/game.state';
+import { populateSelf } from '../stores/game-store/game.actions';
+
 
 @Component({
   selector: 'app-dialog-create-game',
@@ -21,6 +27,7 @@ export class DialogCreateGameComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogCreateGameComponent>,
     private preGameService: PreGameService,
+    protected Store: Store<GameState>
     ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 export interface Self {
-	uuid: string;
-	gameId: string;
+	id: string;
 	name: string;
+	isOwner: boolean;
 }

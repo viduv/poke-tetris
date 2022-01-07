@@ -4,8 +4,11 @@ import {Store} from "@ngrx/store";
 import {PreGameState} from "./stores/pre-game-store/pre-game.state";
 import {PreGame} from "./stores/pre-game-store/pre-game";
 import {receiveGameList} from "./stores/pre-game-store/pre-game.actions";
-import {Observable, of, Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
+import {GameState} from "./stores/game-store/game.state"
+import {Self} from "./model/self"
+import {populateSelf} from "./stores/game-store/game.actions"
 
 @Injectable({
   providedIn: 'root'
@@ -13,30 +16,70 @@ import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
 export class PreGameService {
 
   gamesList: Observable<Array<PreGame>> = new Observable()
-  sub: Subscription = new Subscription()
+  self: Observable<Self> = new Observable()
+  gamesListSub: Subscription = new Subscription()
+  selfSub: Subscription = new Subscription()
 
-  constructor(protected socket: Socket, protected store: Store<PreGameState>) {
+  constructor(protected socket: Socket, protected preGameStore: Store<PreGameState>, protected GameStore : Store<GameState>) {
   }
 
+  // Game LIST
   protected initGamesListSocket(): void {
     this.gamesList = new Observable((observer) => 
       this.socket.on('gamesList', (data : Array<PreGame>) => observer.next(data))
     );
-    this.sub = this.gamesList.subscribe(games => this.store.dispatch(receiveGameList({games: games})))
+    this.gamesListSub = this.gamesList.subscribe(games => this.preGameStore.dispatch(receiveGameList({games: games})))
   }
 
   public getGames(): Observable<PreGame[]> {
     this.initGamesListSocket();
     this.socket.emit("gamesList")
-    return this.store.select(selectPreGameGames);
-  }
-
-  public CreateGame(game: object): void {
-    this.socket.emit("createGame", game)
+    return this.preGameStore.select(selectPreGameGames);
   }
 
   public flushGamesListSocket(): void {
-    this.sub.unsubscribe()
+    this.gamesListSub.unsubscribe()
+  }
+
+  // Game CREATION 
+  protected initCreateGameSocket(): void {
+    this.self = new Observable((observer) =>
+      this.socket.on("createGame", (data : Self) => observer.next(data))
+    );
+    this.selfSub = this.self.subscribe(self => {
+        this.GameStore.dispatch(populateSelf({self: self}))
+        this.flushCreateGameSocket()
+    }
+    )
+  }
+
+  public CreateGame(game: object): void {
+    this.initCreateGameSocket();
+    this.socket.emit("createGame", game)
+  }
+
+  public flushCreateGameSocket(): void {
+    this.selfSub.unsubscribe()
+  }
+
+  // Game Join
+  protected initJoinGameSocket(): void {
+    this.self = new Observable((observer) =>
+      this.socket.on("joinGame", (data : Self) => observer.next(data))
+    );
+    this.selfSub = this.self.subscribe(self => {
+      this.GameStore.dispatch(populateSelf({self : self}))
+    this.flushJoinGameSocket() 
+    })
+  }
+
+  public JoinGame(game : object): void {
+    this.initJoinGameSocket();
+    this.socket.emit("joinGame", game)
+  }
+
+  public flushJoinGameSocket(): void {
+    this.selfSub.unsubscribe()
   }
 
 }

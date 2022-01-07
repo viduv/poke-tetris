@@ -1,4 +1,5 @@
 export interface Player {
-	uuid: string;
+	id: string;
 	name: string;
+	isOwner: boolean;
 }

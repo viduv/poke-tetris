@@ -10,6 +10,7 @@ const { PlayerService } = require('./application/service/PlayerService.js');
 const { GameService } = require('./application/service/GameService');
 const { CreateGameIn } = require('./web/in/CreateGameIn');
 const { GameIn } = require('./web/in/GameIn');
+const { SelfOut } = require('./web/out/SelfOut');
 
 
 class Application {
@@ -36,7 +37,8 @@ class Application {
         let gameListOut = new GameListOut(this.io, gameService)
         let gameListIn = new GameListIn(gameListOut)
         let playerService = new PlayerService()
-        let createGameIn = new CreateGameIn(gameListOut, gameService, playerService);
+        let selfOut = new SelfOut(this.io);
+        let createGameIn = new CreateGameIn(gameListOut, gameService, playerService, selfOut);
         let gameIn = new GameIn();
 
         // 2 lines below for testing purpose

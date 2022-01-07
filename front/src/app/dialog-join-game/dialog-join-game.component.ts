@@ -41,6 +41,7 @@ export class DialogJoinGameComponent implements OnInit {
 
   joinGame() : void {
     this.preGameService.flushGamesListSocket()
+    this.preGameService.JoinGame(this.gamesForm.value)
     this.dialogRef.close();
   }
 
