@@ -9,6 +9,7 @@ import {selectPreGameGames} from "./stores/pre-game-store/pre-game.selector";
 import {GameState} from "./stores/game-store/game.state"
 import {Self} from "./model/self"
 import {populateSelf} from "./stores/game-store/game.actions"
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class PreGameService {
   gamesListSub: Subscription = new Subscription()
   selfSub: Subscription = new Subscription()
 
-  constructor(protected socket: Socket, protected preGameStore: Store<PreGameState>, protected GameStore : Store<GameState>) {
+  constructor(protected socket: Socket, protected preGameStore: Store<PreGameState>, protected GameStore : Store<GameState>, private router: Router) {
   }
 
   // Game LIST
@@ -53,6 +54,8 @@ export class PreGameService {
         this.preGameStore.dispatch(flushState())
         // Unsubscribe
         this.flushCreateGameSocket()
+        // Go to Game
+        this.router.navigate(["game"])
     }
     )
   }
@@ -78,6 +81,8 @@ export class PreGameService {
       this.preGameStore.dispatch(flushState())
       // Unsubscribe
       this.flushJoinGameSocket()
+      // Go to Game
+      this.router.navigate(["game"])
     })
   }
 
