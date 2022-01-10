@@ -13,6 +13,7 @@ import { environment } from '../environments/environment';
 import { MainMenuComponent } from './main-menu/main-menu.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatRadioModule} from '@angular/material/radio';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { DialogCreateGameComponent } from './dialog-create-game/dialog-create-game.component';
 import { DialogJoinGameComponent } from './dialog-join-game/dialog-join-game.component';
 import {MatSelectModule} from '@angular/material/select';
@@ -42,6 +43,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MatDialogModule,
     MatSelectModule,
     MatRadioModule,
+    MatSnackBarModule,
     MatButtonToggleModule,
     FormsModule,
     ReactiveFormsModule,
