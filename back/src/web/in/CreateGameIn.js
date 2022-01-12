@@ -1,26 +1,24 @@
 class CreateGameIn {
-	GameListOut;
-	GameService;
-	PlayerService;
-	SelfOut;
-    
-	constructor(gameListOut, gameService, playerService, selfOut) {
-	    this.GameListOut = gameListOut;
-	    this.GameService = gameService;
-	    this.PlayerService = playerService;
-	    this.SelfOut = selfOut;
-	}
-    
-	initConnection(socket) {
-	    socket.on("createGame", (data) => {
-		// Create Game
-		let game = this.GameService.addGame(data.gameName, data.playerName, this.PlayerService, data.gameIsPublic)
-		// Refresh Game List for people on the room
-		this.GameListOut.refreshGameList();
-		// Send Self Data 
-		this.SelfOut.sendSelf(socket, game.players, "createGame" )
-	    });
-	}
+
+    constructor(gameListOut, gameService, selfOut, gameOut) {
+        this.GameListOut = gameListOut;
+        this.GameService = gameService;
+        this.SelfOut = selfOut;
+        this.gameOut = gameOut;
     }
-    
-    module.exports.CreateGameIn = CreateGameIn;
+
+    initConnection(socket) {
+        socket.on("createGame", (data) => {
+            // Create Game
+            let game = this.GameService.addGame(data.gameName, data.playerName, data.gameIsPublic)
+            // Refresh Game List for people on the room
+            this.GameListOut.refreshGameList();
+            // Send Self Data
+            this.SelfOut.sendSelf(socket, game.players[0]);
+            // Send game id
+            this.gameOut.sendGameId(socket, game);
+        });
+    }
+}
+
+module.exports.CreateGameIn = CreateGameIn;

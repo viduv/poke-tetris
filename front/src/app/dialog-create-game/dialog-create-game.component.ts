@@ -1,14 +1,14 @@
-// Angular Import 
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup} from '@angular/forms';
+// Angular Import
+import {Component, OnInit} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
 // Material Import
 import {MatDialogRef} from "@angular/material/dialog";
-import { PreGameService } from '../pre-game.service';
+import {PreGameService} from '../pre-game.service';
 // Ngrx Import
-import { Store } from '@ngrx/store';
+import {Store} from '@ngrx/store';
 // State Import
-import { GameState } from '../stores/game-store/game.state';
-import { populateSelf } from '../stores/game-store/game.actions';
+import {GameState} from '../stores/game-store/game.state';
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -27,15 +27,16 @@ export class DialogCreateGameComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<DialogCreateGameComponent>,
     private preGameService: PreGameService,
-    protected Store: Store<GameState>
-    ) { }
+    protected Store: Store<GameState>,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
   }
 
   createGame(): void {
-    console.log(this.createGameForm.value)
-    this.preGameService.CreateGame(this.createGameForm.value)
+    this.preGameService.CreateGame(this.createGameForm.value);
     this.dialogRef.close();
   }
 
@@ -43,10 +44,8 @@ export class DialogCreateGameComponent implements OnInit {
     this.dialogRef.close();
   }
 
-    // Disabled Submit Form button if no value
-    isDisabled(): boolean {
-      let isDisabled : boolean = this.createGameForm.value.playerName && this.createGameForm.value.gameName && this.createGameForm.value.gameIsPublic !== "" ? false : true
-      return isDisabled
-    }
-
+  // Disabled Submit Form button if no value
+  isDisabled(): boolean {
+    return !(this.createGameForm.value.playerName && this.createGameForm.value.gameName && this.createGameForm.value.gameIsPublic !== "")
+  }
 }

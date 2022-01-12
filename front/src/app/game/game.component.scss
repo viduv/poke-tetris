@@ -1,0 +1,42 @@
+.game {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .player, .other-player {
+    flex-grow: 1;
+  }
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 32px;
+    h1, h2 {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      margin-top: 32px;
+    }
+
+    app-game-field {
+      height: 70%;
+      width: 65%;
+    }
+  }
+
+  .other-player {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 32px;
+
+    app-game-field {
+      height: 45%;
+      width: 50%;
+    }
+  }
+
+}

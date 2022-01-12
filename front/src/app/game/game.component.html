@@ -1,1 +1,19 @@
-<p>game works!</p>
+<div class="game">
+  <div class="other-player">
+    <app-game-field [player]="getOtherPlayers(0) | async"></app-game-field>
+    <app-game-field [player]="getOtherPlayers(1) | async"></app-game-field>
+  </div>
+  <div class="player">
+    <h1>RED-TETRIS</h1>
+    <h2>{{self?.name}}</h2>
+    <app-game-field></app-game-field>
+    <div class="options" *ngIf="(getGame() | async)?.gameState === 'CREATE'">
+      <button mat-raised-button color="primary">Lancer la partie</button>
+      <button mat-raised-button color="accent">Quitter</button>
+    </div>
+  </div>
+  <div class="other-player">
+    <app-game-field [player]="(getOtherPlayers(2) | async)"></app-game-field>
+    <app-game-field [player]="getOtherPlayers(3) | async"></app-game-field>
+  </div>
+</div>

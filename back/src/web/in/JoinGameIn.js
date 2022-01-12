@@ -1,21 +1,23 @@
+const {Player} = require("../../application/model/Player");
+
 class JoinGameIn {
-	GameService;
-	PlayerService;
-	SelfOut;
-    
-	constructor(gameService, playerService, selfOut) {
-	    this.GameService = gameService;
-	    this.PlayerService = playerService;
-	    this.SelfOut = selfOut;
-	}
-    
-	initConnection(socket) {
-	    socket.on("joinGame", (data) => {
-		this.player = this.GameService.addPlayerToGame(data.playerName, data.gameId, this.PlayerService)
-		// Send Self Data
-		this.SelfOut.sendSelf(socket, this.player, "joinGame" )
-	    });
-	}
+    constructor(gameService, selfOut, gameOut) {
+        this.GameService = gameService;
+        this.SelfOut = selfOut;
+        this.gameOut = gameOut;
     }
-    
-    module.exports.JoinGameIn = JoinGameIn;
+
+    initConnection(socket) {
+        socket.on("joinGame", (data) => {
+            let player = new Player(data.playerName, false);
+            let game = this.GameService.getGame(data.gameId);
+            if (game !== undefined) {
+                game.players.push(player);
+                this.SelfOut.sendSelf(socket, player)
+                this.gameOut.sendGameId(socket, game);
+            }
+        });
+    }
+}
+
+module.exports.JoinGameIn = JoinGameIn;

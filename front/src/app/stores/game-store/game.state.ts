@@ -1,5 +1,5 @@
 import { Game } from "./game"
-import { Self} from "../../model/self"
+import { Self} from "./self"
 
 export interface GameState {
   game: Game;

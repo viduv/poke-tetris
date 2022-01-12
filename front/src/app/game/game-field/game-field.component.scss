@@ -1,0 +1,15 @@
+.field {
+  width: 90%;
+  height: 90%;
+  border: solid 1px white;
+
+  .tetromino {
+    width: 40%;
+    height: 20%;
+  }
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+}

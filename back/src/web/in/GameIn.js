@@ -1,12 +1,19 @@
+const {Game} = require("../../application/model/Game");
+
 class GameIn {
-    
-	constructor() {
-	}
-    
-	initConnection(socket) {
-	    socket.on("Game", (data) => {
-	    });
-	}
+
+    constructor(gameOut, gameService) {
+        this.gameOut = gameOut;
+        this.gameService = gameService;
     }
-    
-    module.exports.GameIn = GameIn;
+
+    initConnection(socket) {
+        socket.on("game", (data) => {
+            let game = this.gameService.getGame(data.id);
+            game.connect(socket);
+            this.gameOut.refreshGame(game);
+        });
+    }
+}
+
+module.exports.GameIn = GameIn;

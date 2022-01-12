@@ -21,8 +21,9 @@ import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {preGameReducer} from "./stores/pre-game-store/pre-game.reducer";
 import { GameComponent } from './game/game.component';
 import { GameReducer } from './stores/game-store/game.reducer';
+import { GameFieldComponent } from './game/game-field/game-field.component';
+import { TetrominoComponent } from './game/game-field/tetromino/tetromino.component';
 
-//const config: SocketIoConfig = { url: 'http://10.12.10.3:4444', options: {} };
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
@@ -32,7 +33,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     DialogCreateGameComponent,
     DialogJoinGameComponent,
     GameComponent,
-
+    GameFieldComponent,
+    TetrominoComponent,
   ],
   imports: [
     BrowserModule,

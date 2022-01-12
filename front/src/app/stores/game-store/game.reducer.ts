@@ -4,12 +4,11 @@ import * as GameAction from './game.actions';
 
 export const initialState: GameState = {
   game: {
-    gameId: "",
-    gameName: "",
+    id: "",
+    name: "",
     gameState: "",
-    ownerName: "",
     isPublic: true,
-    player: [],
+    players: [],
   },
   self: {
     id: "",
@@ -18,7 +17,7 @@ export const initialState: GameState = {
   }
 }
 
-export const GameReducer = createReducer(initialState, 
+export const GameReducer = createReducer(initialState,
   on(GameAction.flushState, (state) => ({
     ...state,
     games: []
@@ -26,5 +25,9 @@ export const GameReducer = createReducer(initialState,
   on(GameAction.populateSelf, (state, self) => ({
     ...state,
     self: self.self,
+  })),
+  on(GameAction.populateGame, (state, game) => ({
+    ...state,
+    game: game.game,
   }))
 );

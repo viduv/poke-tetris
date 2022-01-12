@@ -1,28 +1,24 @@
-const { Game } = require("../model/Game");
+const {Game} = require("../model/Game");
+const {Player} = require("../model/Player");
+
 class GameService {
-    
-    games = []
 
-    constructor() {}
-
-    addGame(name, playername, playerservice, isPublic) {
-        let newGame = new Game(name, "CREATE", playerservice.addPlayer(playername, true), isPublic)
-        this.games.push(newGame)
-        return newGame
+    constructor() {
+        this.games = [];
     }
 
-    addPlayerToGame(playername, gameId, playerservice) {
-        let player = playerservice.addPlayer(playername, false)
-        this.games.filter(games => games.id === gameId)[0].players.push(player)
-        return player;
+    addGame(name, playerName, isPublic) {
+        let newGame = new Game(name, "CREATE", new Player(playerName, true), isPublic);
+        this.games.push(newGame);
+        return newGame;
     }
 
-    getGame(id){
-        return this.games.filter(item => item.id === id)
+    getGame(id) {
+        return Object.assign(new Game(), this.games.find(item => item.id === id));
     }
 
-    getGames(){
-        return this.games
+    getGames() {
+        return this.games;
     }
 }
 

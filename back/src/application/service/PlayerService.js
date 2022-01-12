@@ -1,10 +1,11 @@
-const { Player } = require("../model/Player");
+const {Player} = require("../model/Player");
 
 class PlayerService {
-    
+
     players = []
 
-    constructor() {}
+    constructor() {
+    }
 
     addPlayer(name, isOwner) {
         let newPlayer = new Player(name, isOwner);
@@ -12,11 +13,11 @@ class PlayerService {
         return newPlayer
     }
 
-    getPlayer(id){
+    getPlayer(id) {
         return this.players.filter(item => item.id === id)
     }
 
-    getPlayers(){
+    getPlayers() {
         return this.players
     }
 

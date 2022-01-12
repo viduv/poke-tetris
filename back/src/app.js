@@ -1,19 +1,17 @@
 express = require('express');
 http = require('http');
 socketio = require('socket.io');
-let { ReceiveMessageOut } = require("./web/out/ReceiveMessageOut");
-let { ReceiveMessageIn } = require("./web/in/ReceiveMessageIn");
-let { GameListIn } = require('./web/in/GameListIn');
-let { GameListOut} = require('./web/out/GameListOut');
-const { ChatService } = require('./application/service/ChatService.js');
-const { PlayerService } = require('./application/service/PlayerService.js');
-const { GameService } = require('./application/service/GameService');
-const { CreateGameIn } = require('./web/in/CreateGameIn');
-const { GameIn } = require('./web/in/GameIn');
-const { JoinGameIn } = require('./web/in/JoinGameIn');
-const { SelfOut } = require('./web/out/SelfOut');
-const { join } = require('path');
-
+let {ReceiveMessageOut} = require("./web/out/ReceiveMessageOut");
+let {ReceiveMessageIn} = require("./web/in/ReceiveMessageIn");
+let {GameListIn} = require('./web/in/GameListIn');
+let {GameListOut} = require('./web/out/GameListOut');
+const {ChatService} = require('./application/service/ChatService.js');
+const {GameService} = require('./application/service/GameService');
+const {CreateGameIn} = require('./web/in/CreateGameIn');
+const {GameIn} = require('./web/in/GameIn');
+const {JoinGameIn} = require('./web/in/JoinGameIn');
+const {SelfOut} = require('./web/out/SelfOut');
+const {GameOut} = require("./web/out/GameOut");
 
 class Application {
 
@@ -38,16 +36,11 @@ class Application {
         let gameService = new GameService();
         let gameListOut = new GameListOut(this.io, gameService)
         let gameListIn = new GameListIn(gameListOut)
-        let playerService = new PlayerService()
         let selfOut = new SelfOut(this.io);
-        let createGameIn = new CreateGameIn(gameListOut, gameService, playerService, selfOut);
-        let joinGameIn = new JoinGameIn(gameService, playerService, selfOut);
-        let gameIn = new GameIn();
-
-        // 2 lines below for testing purpose
-        gameService.addGame("Game1", "Player1", playerService, true);
-        gameService.addGame("Game2", "Player2", playerService, false);
-
+        let gameOut = new GameOut(this.io);
+        let createGameIn = new CreateGameIn(gameListOut, gameService, selfOut, gameOut);
+        let joinGameIn = new JoinGameIn(gameService, selfOut, gameOut);
+        let gameIn = new GameIn(gameOut, gameService);
 
         this.io.on("connection", socket => {
             receiveMessageIn.initConnection(socket);
@@ -55,7 +48,7 @@ class Application {
             createGameIn.initConnection(socket);
             gameIn.initConnection(socket);
             joinGameIn.initConnection(socket);
-            
+
             this.io.emit("initChat", chatService.getChat().getMessages());
 
             console.log(`Socket ${socket.id} has connected`);
