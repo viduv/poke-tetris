@@ -7,7 +7,7 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class TetrominoComponent implements OnInit {
 
-  @Input() type: 'T' | 'S' | 'Z' | 'L' | 'J';
+  @Input() type: 'T' | 'S' | 'Z' | 'L' | 'J' | 'I';
 
   constructor() { }
 

@@ -14,11 +14,12 @@ export class GameService {
   }
 
   public initGameSocket(gameId: string): void {
-    console.log("init game socket")
-    this.socket.fromEvent<Game>("game").subscribe((game: Game) => {
-      console.log("event game", game)
-      this.gameStore.dispatch(populateGame({game: game}));
-    });
+    this.socket.fromEvent<Game>("game").subscribe((game: Game) =>
+      this.gameStore.dispatch(populateGame({game: game})));
     this.socket.emit("game", {id: gameId});
+  }
+
+  public leaveGame(game: Game, playerId: string): void {
+    this.socket.emit("leaveGame", ({gameId: game.id, playerId: playerId}));
   }
 }

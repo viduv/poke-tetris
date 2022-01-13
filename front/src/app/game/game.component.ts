@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {GameService} from "../game.service";
 import {Self} from "../stores/game-store/self";
 import {Game} from "../stores/game-store/game";
@@ -8,7 +8,6 @@ import {Store} from "@ngrx/store";
 import {GameState} from "../stores/game-store/game.state";
 import {selectGame, selectSelf} from "../stores/game-store/game.selector";
 import {Observable, take} from "rxjs";
-import {map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-game',
@@ -19,10 +18,12 @@ export class GameComponent implements OnInit {
 
   id: string;
   self: Self;
+  game: Game;
 
   constructor(private activatedRoute: ActivatedRoute,
               private gameService: GameService,
-              protected gameStore: Store<GameState>) {
+              private gameStore: Store<GameState>,
+              private router: Router) {
   }
 
   ngOnInit(): void {
@@ -33,15 +34,19 @@ export class GameComponent implements OnInit {
     this.gameStore.select(selectSelf).subscribe(self => {
       this.self = self;
     });
+    this.getGame().subscribe(game => this.game = game);
   }
 
-  getGame(): Observable<Game> {
+  private getGame(): Observable<Game> {
     return this.gameStore.select(selectGame);
   }
 
-  getOtherPlayers(internId: number): Observable<Player> {
-    console.log("getOtherPlayers", internId)
-    this.getGame().pipe(take(1)).subscribe(value => console.log(value))
-    return this.getGame().pipe(map(game => game.players.filter(player => player.id !== this.self.id)[internId]));
+  getOtherPlayers(internId: number): Player {
+    return this.game.players.filter(player => player.id !== this.self.id)[internId];
+  }
+
+  leaveGame() {
+    this.gameService.leaveGame(this.game, this.self.id);
+    this.router.navigate(['/']);
   }
 }

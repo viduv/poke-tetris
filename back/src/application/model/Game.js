@@ -17,6 +17,10 @@ class Game {
     connect(socket) {
         socket.join(this.id);
     }
+
+    disconnect(socket) {
+        socket.leave(this.id);
+    }
 }
 
 module.exports.Game = Game;

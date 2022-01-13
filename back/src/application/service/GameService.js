@@ -20,6 +20,11 @@ class GameService {
     getGames() {
         return this.games;
     }
+
+    saveGame(game) {
+        this.games = this.games.filter(g => g.id !== game.id);
+        this.games.push(game);
+    }
 }
 
 module.exports.GameService = GameService;
