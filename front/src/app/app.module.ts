@@ -18,6 +18,8 @@ import { DialogCreateGameComponent } from './dialog-create-game/dialog-create-ga
 import { DialogJoinGameComponent } from './dialog-join-game/dialog-join-game.component';
 import {MatSelectModule} from '@angular/material/select';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatIconModule} from '@angular/material/icon';
+
 import {preGameReducer} from "./stores/pre-game-store/pre-game.reducer";
 import { GameComponent } from './game/game.component';
 import { GameReducer } from './stores/game-store/game.reducer';
@@ -47,6 +49,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     MatRadioModule,
     MatSnackBarModule,
     MatButtonToggleModule,
+    MatIconModule,
     FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({ preGame: preGameReducer, Game: GameReducer  }, {}),

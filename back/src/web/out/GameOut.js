@@ -5,7 +5,6 @@ class GameOut {
     }
 
     refreshGame(game) {
-        console.log("game", game);
         this.io.to(game.id).emit("game", game);
     }
 

@@ -4,6 +4,7 @@ import {GameState} from "./stores/game-store/game.state";
 import {Socket} from "ngx-socket-io";
 import {Game} from "./stores/game-store/game";
 import {populateGame} from "./stores/game-store/game.actions";
+import {Player} from "./model/player";
 
 @Injectable({
   providedIn: 'root'
@@ -21,5 +22,9 @@ export class GameService {
 
   public leaveGame(game: Game, playerId: string): void {
     this.socket.emit("leaveGame", ({gameId: game.id, playerId: playerId}));
+  }
+
+  public kickPlayer(game:Game, kickPlayer: Player): void {
+    this.socket.emit("kickPlayer", ({gameId: game.id, kickPlayerId: kickPlayer.id}));
   }
 }

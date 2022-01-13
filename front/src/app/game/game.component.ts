@@ -34,7 +34,13 @@ export class GameComponent implements OnInit {
     this.gameStore.select(selectSelf).subscribe(self => {
       this.self = self;
     });
-    this.getGame().subscribe(game => this.game = game);
+    this.getGame().subscribe(game => {
+      this.game = game;
+      if (this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id)) {
+        console.log(this.game)
+        this.router.navigate(['/']);
+      }
+    });
   }
 
   private getGame(): Observable<Game> {
@@ -48,5 +54,9 @@ export class GameComponent implements OnInit {
   leaveGame() {
     this.gameService.leaveGame(this.game, this.self.id);
     this.router.navigate(['/']);
+  }
+
+  kickPlayer(player: Player) {
+    this.gameService.kickPlayer(this.game, player);
   }
 }

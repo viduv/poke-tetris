@@ -13,6 +13,7 @@ const {JoinGameIn} = require('./web/in/JoinGameIn');
 const {SelfOut} = require('./web/out/SelfOut');
 const {GameOut} = require("./web/out/GameOut");
 const {LeaveGameIn} = require("./web/in/LeaveGameIn");
+const {KickPlayerIn} = require("./web/in/KickPlayerIn");
 
 class Application {
 
@@ -43,6 +44,7 @@ class Application {
         let joinGameIn = new JoinGameIn(gameService, selfOut, gameOut);
         let gameIn = new GameIn(gameOut, gameService);
         let leaveGameIn = new LeaveGameIn(gameService, gameOut);
+        let kickPlayerIn = new KickPlayerIn(gameService, gameOut);
 
         this.io.on("connection", socket => {
             receiveMessageIn.initConnection(socket);
@@ -51,6 +53,7 @@ class Application {
             gameIn.initConnection(socket);
             joinGameIn.initConnection(socket);
             leaveGameIn.initConnection(socket);
+            kickPlayerIn.initConnection(socket);
 
             this.io.emit("initChat", chatService.getChat().getMessages());
 

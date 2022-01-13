@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Player} from "../../model/player";
 
 @Component({
@@ -8,6 +8,11 @@ import {Player} from "../../model/player";
 })
 export class GameFieldComponent implements OnInit {
   @Input() player: Player | null;
+
+  @Input() otherPlayer: boolean = false;
+  @Input() canKick: boolean = false;
+
+  @Output() kickPlayer = new EventEmitter<void>();
 
   field: number[][];
 
