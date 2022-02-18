@@ -14,6 +14,7 @@ import {selectPreGameGames, selectPreGamePublicGames} from "../stores/pre-game-s
 import {flushState} from "../stores/pre-game-store/pre-game.actions"
 // Rxjs Import
 import {Observable} from "rxjs";
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dialog-join-game',
@@ -46,28 +47,33 @@ export class DialogJoinGameComponent implements OnInit {
 
   joinGame(): void {
     this.preGameService.flushGamesListSocket();
+    // If the game is Selected (Public Game) Just try to join the game
     if (this.gamesForm.value.gameSelect) {
       this.preGameService.JoinGame(
         {
           gameId: this.gamesForm.value.gameSelect,
           playerName: this.gamesForm.value.playerName
         })
-    } else {
-      // check if the gameId exist
-      this.Games.subscribe(games => {
-        games.forEach(game => {
-          if (game.gameId === this.gamesForm.value.gameId)
-            this.isGameIdOnGames = true
+    } 
+    else {
+      // check if the gameId exist (Private Game access)
+      this.Games.pipe(first()).subscribe(games => {
+        if (games.findIndex(game => game.gameId === this.gamesForm.value.gameId) !== -1){
+            this.preGameService.JoinGame({
+                    gameId: this.gamesForm.value.gameId,
+                    playerName: this.gamesForm.value.playerName,
+            })
+        }
+        // If not return an error 
+        else {
+            this.snackBar.open("L'id de la game est introuvable", "Fermer", {
+                 duration: 6000,
+                 verticalPosition: "top",
+                 horizontalPosition: "center"
+               });
+          }
+  
         })
-      })
-      this.isGameIdOnGames ? this.preGameService.JoinGame({
-        gameId: this.gamesForm.value.gameId,
-        playerName: this.gamesForm.value.playerName,
-      }) : this.snackBar.open("L'id de la game est introuvable", "Fermer", {
-        duration: 6000,
-        verticalPosition: "top",
-        horizontalPosition: "center"
-      });
     }
     this.dialogRef.close();
   }

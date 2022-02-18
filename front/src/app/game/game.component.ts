@@ -7,7 +7,7 @@ import {Player} from "../model/player";
 import {Store} from "@ngrx/store";
 import {GameState} from "../stores/game-store/game.state";
 import {selectGame, selectSelf} from "../stores/game-store/game.selector";
-import {Observable, take} from "rxjs";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-game',

@@ -10,6 +10,7 @@ import {GameState} from "./stores/game-store/game.state"
 import {Self} from "./stores/game-store/self"
 import {populateSelf} from "./stores/game-store/game.actions"
 import {Router} from '@angular/router';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class PreGameService {
   constructor(protected socket: Socket,
               protected preGameStore: Store<PreGameState>,
               protected gameStore: Store<GameState>,
-              private router: Router) {
+              private router: Router,
+              private snackBar: MatSnackBar,) {
   }
 
   // Game LIST
@@ -76,8 +78,19 @@ export class PreGameService {
 
   // Game Join
   protected initJoinGameSocket(): void {
-    this.socket.on("gameId", (data: { id: string }) => {
-      this.router.navigate(["game/" + data.id]);
+    this.socket.on("gameId", (data: { id: string, error: boolean }) => {
+      if(!data.error)
+        this.router.navigate(["game/" + data.id]);
+      else {
+        this.snackBar.open(data.id, "Fermer", {
+        duration: 6000,
+        verticalPosition: "top",
+        horizontalPosition: "center"
+        }
+      );
+      this.selfSub.unsubscribe()
+      return ;
+      }
     });
     this.self = new Observable((observer) =>
       this.socket.on("self", (data: Self) => observer.next(data))
