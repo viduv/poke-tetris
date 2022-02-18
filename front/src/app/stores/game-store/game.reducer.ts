@@ -20,7 +20,6 @@ export const initialState: GameState = {
 export const GameReducer = createReducer(initialState,
   on(GameAction.flushState, (state) => ({
     ...state,
-    games: []
   })),
   on(GameAction.populateSelf, (state, self) => ({
     ...state,

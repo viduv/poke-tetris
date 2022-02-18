@@ -77,10 +77,12 @@ export class PreGameService {
   }
 
   // Game Join
-  protected initJoinGameSocket(): void {
+  protected initJoinGameSocket(from: string): void {
     this.socket.on("gameId", (data: { id: string, error: boolean }) => {
-      if(!data.error)
-        this.router.navigate(["game/" + data.id]);
+      if(!data.error){
+        if(from === "dialog")
+          this.router.navigate(["game/" + data.id]);
+      }
       else {
         this.snackBar.open(data.id, "Fermer", {
         duration: 6000,
@@ -105,8 +107,8 @@ export class PreGameService {
     });
   }
 
-  public JoinGame(game: object): void {
-    this.initJoinGameSocket();
+  public JoinGame(game: object, from: string): void {
+    this.initJoinGameSocket(from);
     this.socket.emit("joinGame", game);
   }
 

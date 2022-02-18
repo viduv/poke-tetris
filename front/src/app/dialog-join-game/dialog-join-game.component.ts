@@ -53,7 +53,9 @@ export class DialogJoinGameComponent implements OnInit {
         {
           gameId: this.gamesForm.value.gameSelect,
           playerName: this.gamesForm.value.playerName
-        })
+        },
+        "dialog"
+        )
     } 
     else {
       // check if the gameId exist (Private Game access)
@@ -62,7 +64,8 @@ export class DialogJoinGameComponent implements OnInit {
             this.preGameService.JoinGame({
                     gameId: this.gamesForm.value.gameId,
                     playerName: this.gamesForm.value.playerName,
-            })
+            },
+            "dialog")
         }
         // If not return an error 
         else {
