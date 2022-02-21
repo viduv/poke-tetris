@@ -14,7 +14,11 @@ class GameService {
     }
 
     getGame(id) {
-        return Object.assign(new Game(), this.games.find(item => item.id === id));
+        if(this.games.find(item => item.id === id) != undefined){
+            return Object.assign(new Game(), this.games.find(item => item.id === id));
+        }
+        else
+            return "this game does not exit or your url is not correctly formated"
     }
 
     getGames() {

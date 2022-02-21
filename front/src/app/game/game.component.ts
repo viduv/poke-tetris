@@ -35,6 +35,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(first()).subscribe(map => {
       this.id = map.get("id") || "";
+      // Parse url
       if (this.id.includes("[") && this.id.includes("]")){
         if(this.id.indexOf("[") < this.id.indexOf("]") - 1){
           this.username = this.id.substring( this.id.indexOf("[") + 1, this.id.indexOf("]"))
@@ -46,7 +47,7 @@ export class GameComponent implements OnInit {
             },
             "game"
         )
-            // We must add isDirectAccess to not navigate to root 
+            // We must add isDirectAccess boolean to know if the url is correct and not navigate to root
             // because self subscribe take time to get the data (for sure that is not the best solution)
             this.isDirectAcces = true
         }

@@ -28,7 +28,6 @@ export class DialogCreateGameComponent implements OnInit {
     public dialogRef: MatDialogRef<DialogCreateGameComponent>,
     private preGameService: PreGameService,
     protected Store: Store<GameState>,
-    private router: Router
   ) {
   }
 
