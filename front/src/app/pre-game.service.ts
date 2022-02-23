@@ -90,6 +90,7 @@ export class PreGameService {
         horizontalPosition: "center"
         }
       );
+      this.router.navigate([""])
       this.selfSub.unsubscribe()
       return ;
       }

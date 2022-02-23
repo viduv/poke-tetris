@@ -10,6 +10,7 @@ import {selectGame, selectSelf} from "../stores/game-store/game.selector";
 import {Observable} from "rxjs";
 import {first} from "rxjs/operators";
 import {PreGameService} from "../pre-game.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 import { flushState } from '../stores/game-store/game.actions';
 @Component({
   selector: 'app-game',
@@ -23,12 +24,13 @@ export class GameComponent implements OnInit {
   game: Game;
   username : string = ""
   isDirectAcces : boolean = false;
-
+  subscribe : any;
   constructor(private activatedRoute: ActivatedRoute,
               private gameService: GameService,
               private gameStore: Store<GameState>,
               private router: Router,
               private preGameService: PreGameService,
+              private snackBar: MatSnackBar,
               ) {
   }
 
@@ -42,8 +44,8 @@ export class GameComponent implements OnInit {
           this.id = this.id.replace("[" + this.username + "]", "")
           this.preGameService.JoinGame(
             {
-            gameId: this.id,
-            playerName: this.username,
+              gameId: this.id,
+              playerName: this.username,
             },
             "game"
         )
@@ -60,16 +62,20 @@ export class GameComponent implements OnInit {
     if (!this.isDirectAcces && this.self.id === ""){ 
       this.router.navigate(['/']);
     }
-    this.getGame().subscribe(game => {
-      this.game = game;
+    this.subscribe = this.getGame().subscribe(game => {
+      this.game = game;    
+      // Handling Kiking someone of the game  
+      if (this.subscribe && this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id))
+      {
+        this.snackBar.open("Vous avez été expulsé de la partie", "Fermer", {
+          duration: 6000,
+          verticalPosition: "top",
+          horizontalPosition: "center"
+        });
+        this.router.navigate(['/']);
+        this.subscribe.unsubscribe()
+      }
     })
-    //this.getGame().subscribe(game => {
-     // this.game = game;
-    
-      // if (this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id)) {
-      //   this.router.navigate(['/']);
-      // }
-  //  });
   }
 
   private getGame(): Observable<Game> {
