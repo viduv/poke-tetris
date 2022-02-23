@@ -8,6 +8,7 @@ class LeaveGameIn {
         socket.on("leaveGame", (data) => {
             let game = this.gameService.getGame(data.gameId);
             game.disconnect(socket);
+            // We must add an if statement if the player that leave is Owner of the game and change it
             game.players = game.players.filter(player => player.id !== data.playerId);
             this.gameService.saveGame(game);
             this.gameOut.refreshGame(game);
