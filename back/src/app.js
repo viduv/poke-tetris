@@ -14,6 +14,7 @@ const {SelfOut} = require('./web/out/SelfOut');
 const {GameOut} = require("./web/out/GameOut");
 const {LeaveGameIn} = require("./web/in/LeaveGameIn");
 const {KickPlayerIn} = require("./web/in/KickPlayerIn");
+const {DisconnectIn} = require("./web/in/DisconnectIn");
 
 class Application {
 
@@ -43,8 +44,9 @@ class Application {
         let createGameIn = new CreateGameIn(gameListOut, gameService, selfOut, gameOut);
         let joinGameIn = new JoinGameIn(gameService, selfOut, gameOut);
         let gameIn = new GameIn(gameOut, gameService);
-        let leaveGameIn = new LeaveGameIn(gameService, gameOut);
+        let leaveGameIn = new LeaveGameIn(gameService, gameOut, gameListOut);
         let kickPlayerIn = new KickPlayerIn(gameService, gameOut);
+        let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut); 
 
         this.io.on("connection", socket => {
             receiveMessageIn.initConnection(socket);
@@ -54,8 +56,9 @@ class Application {
             joinGameIn.initConnection(socket);
             leaveGameIn.initConnection(socket);
             kickPlayerIn.initConnection(socket);
+            disconnectIn.initConnection(socket);
 
-            this.io.emit("initChat", chatService.getChat().getMessages());
+    //        this.io.emit("initChat", chatService.getChat().getMessages());
             
             console.log(`Socket ${socket.id} has connected`);
         });

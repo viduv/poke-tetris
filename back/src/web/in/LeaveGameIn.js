@@ -1,7 +1,8 @@
 class LeaveGameIn {
-    constructor(gameService, gameOut) {
+    constructor(gameService, gameOut, gameListOut) {
         this.gameService = gameService;
         this.gameOut = gameOut;
+        this.gameListOut = gameListOut;
     }
 
     initConnection(socket) {
@@ -20,10 +21,17 @@ class LeaveGameIn {
                         }       
                     }
             })
-        }
+        
             game.players = game.players.filter(player => player.id !== data.playerId);
             this.gameService.saveGame(game);
             this.gameOut.refreshGame(game);
+        }
+        else {
+            // delete Game if the player is alone
+            this.gameService.deleteGame(data.gameId);
+            // refresh list for user that try to find games
+            this.gameListOut.refreshGameList();
+        }
         })
     }
 }
