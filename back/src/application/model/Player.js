@@ -1,9 +1,8 @@
-const { v4: uuidv4 } = require('uuid');
 
 class Player {
 
-    constructor(name , isOwner) {
-        this.id = uuidv4(),
+    constructor(name , isOwner, socket) {
+        this.id = socket.id,
         this.name = name,
         this.isOwner = isOwner
     }

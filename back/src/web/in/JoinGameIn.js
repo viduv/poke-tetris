@@ -21,7 +21,7 @@ class JoinGameIn {
             // Create Player + return Self + Game Id
             else 
             {
-                let player = new Player(data.playerName, false);
+                let player = new Player(data.playerName, false, socket);
                 if (game !== undefined) {
                     game.players.push(player);
                     this.gameService.saveGame(game);

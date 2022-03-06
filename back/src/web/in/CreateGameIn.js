@@ -10,7 +10,7 @@ class CreateGameIn {
     initConnection(socket) {
         socket.on("createGame", (data) => {
             // Create Game
-            let game = this.GameService.addGame(data.gameName, data.playerName, data.gameIsPublic)
+            let game = this.GameService.addGame(data.gameName, data.playerName, data.gameIsPublic, socket)
             // Refresh Game List for people on the room
             this.GameListOut.refreshGameList();
             // Send Self Data

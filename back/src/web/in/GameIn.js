@@ -20,6 +20,10 @@ class GameIn {
                 this.gameOut.refreshGame(game);
             }
         });
+        socket.on("disconnect", function (){
+            console.log("DISCONNECT")
+            console.log(this.id); // this.id is the 'id' of the socket that got disconnected
+        });
     }
 }
 

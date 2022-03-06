@@ -56,7 +56,7 @@ class Application {
             kickPlayerIn.initConnection(socket);
 
             this.io.emit("initChat", chatService.getChat().getMessages());
-
+            
             console.log(`Socket ${socket.id} has connected`);
         });
         this.http.listen(4444, () => {

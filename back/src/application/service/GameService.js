@@ -7,8 +7,8 @@ class GameService {
         this.games = [];
     }
 
-    addGame(name, playerName, isPublic) {
-        let newGame = new Game(name, "CREATE", new Player(playerName, true), isPublic);
+    addGame(name, playerName, isPublic, socket) {
+        let newGame = new Game(name, "CREATE", new Player(playerName, true, socket), isPublic);
         this.games.push(newGame);
         return newGame;
     }
