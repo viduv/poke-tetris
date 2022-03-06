@@ -27,7 +27,6 @@ class GameService {
 
     deleteGame(gameId){
         this.games = this.games.filter(item => item.id != gameId)
-        console.log(this.games)
     }
     checkGameUser(playerId){
         var bool = "False"
