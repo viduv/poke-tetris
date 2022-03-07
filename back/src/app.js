@@ -1,11 +1,8 @@
 express = require('express');
 http = require('http');
 socketio = require('socket.io');
-const {ReceiveMessageOut} = require("./web/out/ReceiveMessageOut");
-const {ReceiveMessageIn} = require("./web/in/ReceiveMessageIn");
 const {GameListIn} = require('./web/in/GameListIn');
 const {GameListOut} = require('./web/out/GameListOut');
-const {ChatService} = require('./application/service/ChatService.js');
 const {GameService} = require('./application/service/GameService');
 const {CreateGameIn} = require('./web/in/CreateGameIn');
 const {GameIn} = require('./web/in/GameIn');
@@ -33,9 +30,6 @@ class Application {
 
     run() {
         // Set Object instances
-        let chatService = new ChatService();
-        let receiveMessageOut = new ReceiveMessageOut(this.io, chatService);
-        let receiveMessageIn = new ReceiveMessageIn(chatService, receiveMessageOut);
         let gameService = new GameService();
         let gameListOut = new GameListOut(this.io, gameService)
         let gameListIn = new GameListIn(gameListOut)
@@ -49,7 +43,6 @@ class Application {
         let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut); 
 
         this.io.on("connection", socket => {
-            receiveMessageIn.initConnection(socket);
             gameListIn.initConnection(socket);
             createGameIn.initConnection(socket);
             gameIn.initConnection(socket);
