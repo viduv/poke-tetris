@@ -1,5 +1,4 @@
 const {GameService} = require("../service/GameService");
-const {Game} = require("../model/Game");
 
 test('add a Game', () => {
 	gameServ = new GameService
