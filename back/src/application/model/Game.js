@@ -21,6 +21,10 @@ class Game {
     disconnect(socket) {
         socket.leave(this.id);
     }
+
+    startGame() {
+        this.gameState = "PLAY";
+    }
 }
 
 module.exports.Game = Game;

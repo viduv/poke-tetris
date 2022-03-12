@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {GameService} from "../game.service";
 import {Self} from "../stores/game-store/self";
@@ -12,6 +12,7 @@ import {first} from "rxjs/operators";
 import {PreGameService} from "../pre-game.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import { flushState } from '../stores/game-store/game.actions';
+import {GameplayService} from "../gameplay.service";
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -23,14 +24,16 @@ export class GameComponent implements OnInit {
   self: Self;
   game: Game;
   username : string = ""
-  isDirectAcces : boolean = false;
+  isDirectAccess : boolean = false;
   subscribe : any;
+
   constructor(private activatedRoute: ActivatedRoute,
               private gameService: GameService,
               private gameStore: Store<GameState>,
               private router: Router,
               private preGameService: PreGameService,
               private snackBar: MatSnackBar,
+              private gameplayService: GameplayService
               ) {
   }
 
@@ -51,7 +54,7 @@ export class GameComponent implements OnInit {
         )
             // We must add isDirectAccess boolean to know if the url is correct and not navigate to root
             // because self subscribe take time to get the data (for sure that is not the best solution)
-            this.isDirectAcces = true
+            this.isDirectAccess = true
         }
       }
       this.gameService.initGameSocket(this.id);
@@ -59,12 +62,12 @@ export class GameComponent implements OnInit {
     this.gameStore.select(selectSelf).subscribe(self => {
       this.self = self;
     });
-    if (!this.isDirectAcces && this.self.id === ""){ 
+    if (!this.isDirectAccess && this.self.id === ""){
       this.router.navigate(['/']);
     }
     this.subscribe = this.getGame().subscribe(game => {
-      this.game = game;    
-      // Handling Kiking someone of the game  
+      this.game = game;
+      // Handling Kiking someone of the game
       if (this.subscribe && this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id))
       {
         this.snackBar.open("Vous avez été expulsé de la partie", "Fermer", {
@@ -94,4 +97,16 @@ export class GameComponent implements OnInit {
   kickPlayer(player: Player) {
     this.gameService.kickPlayer(this.game, player);
   }
+
+  startGame() {
+    this.gameService.startGame(this.game);
+    this.gameplayService.start();
+  }
+
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+      if (event.key === "b")
+        this.gameplayService.update();
+  }
+
 }

@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Player} from "../../model/player";
+import {GameplayService} from "../../gameplay.service";
 
 @Component({
   selector: 'app-game-field',
@@ -16,10 +17,9 @@ export class GameFieldComponent implements OnInit {
 
   field: number[][];
 
-  constructor() { }
+  constructor(public gameplayService: GameplayService) { }
 
   ngOnInit(): void {
-
   }
 
 }

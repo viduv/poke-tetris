@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TetrominoComponent } from './tetromino.component';
+import { TileComponent } from './tile.component';
 
-describe('TetrominoComponent', () => {
-  let component: TetrominoComponent;
-  let fixture: ComponentFixture<TetrominoComponent>;
+describe('TileComponent', () => {
+  let component: TileComponent;
+  let fixture: ComponentFixture<TileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TetrominoComponent ]
+      declarations: [ TileComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TetrominoComponent);
+    fixture = TestBed.createComponent(TileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

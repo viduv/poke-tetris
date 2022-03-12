@@ -10,7 +10,7 @@
     <h2>{{self?.name}}</h2>
     <app-game-field></app-game-field>
     <div class="options" *ngIf="game?.gameState === 'CREATE'">
-      <button mat-raised-button color="primary">Lancer la partie</button>
+      <button mat-raised-button color="primary" (click)="startGame()">Lancer la partie</button>
       <button mat-raised-button color="accent" (click)="leaveGame()">Quitter</button>
     </div>
   </div>

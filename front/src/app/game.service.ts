@@ -27,4 +27,8 @@ export class GameService {
   public kickPlayer(game:Game, kickPlayer: Player): void {
     this.socket.emit("kickPlayer", ({gameId: game.id, kickPlayerId: kickPlayer.id}));
   }
+
+  startGame(game: Game) {
+    this.socket.emit("startGame", ({gameId: game.id}));
+  }
 }
