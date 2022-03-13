@@ -13,6 +13,7 @@ const {LeaveGameIn} = require("./web/in/LeaveGameIn");
 const {KickPlayerIn} = require("./web/in/KickPlayerIn");
 const {DisconnectIn} = require("./web/in/DisconnectIn");
 const {StartGameIn} = require("./web/in/StartGameIn");
+const {LockLineIn} = require('./web/in/LockLineIn');
 
 class Application {
 
@@ -43,6 +44,8 @@ class Application {
         let kickPlayerIn = new KickPlayerIn(gameService, gameOut);
         let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut); 
         let startGameIn = new StartGameIn(gameService, gameOut);
+        let lockLineIn = new LockLineIn(gameService, gameOut);
+
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);
             createGameIn.initConnection(socket);
@@ -52,6 +55,7 @@ class Application {
             kickPlayerIn.initConnection(socket);
             disconnectIn.initConnection(socket);
             startGameIn.initConnection(socket);
+            lockLineIn.initConnection(socket);
 
             console.log(`Socket ${socket.id} has connected`);
         });

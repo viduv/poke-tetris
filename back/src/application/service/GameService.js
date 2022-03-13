@@ -13,6 +13,17 @@ class GameService {
         return newGame;
     }
 
+    // Add Line to spectrum
+    addLockLine(addlockline, game, playerId){
+        game.players.map(player => {
+            if(player.id !== playerId){
+                player.lockline += addlockline
+                player.spectrum = player.spectrum.map(value => value + player.lockline)
+            }
+        })
+        return game;
+    }
+
     getGame(id) {
         if(this.games.find(item => item.id === id) != undefined){
             return Object.assign(new Game(), this.games.find(item => item.id === id));
