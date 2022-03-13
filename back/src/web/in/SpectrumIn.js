@@ -1,17 +1,17 @@
-class LockLineIn {
+class SpectrumIn {
 	constructor(gameService, gameOut) {
 	    this.gameService = gameService;
 	    this.gameOut = gameOut;
 	}
     
 	initConnection(socket) {
-	    socket.on("lockLine", (data) => {
+	    socket.on("spectrum", (data) => {
 		let game = this.gameService.getGame(data.gameId);
-		game = this.gameService.addLockLine(data.lockline, game, socket.id)
+		game = this.gameService.refreshSpectrum(socket.id, data.spectrum, game)
 		this.gameOut.refreshGame(game);
 	    });
 	}
     }
     
-    module.exports.LockLineIn = LockLineIn;
+    module.exports.SpectrumIn = SpectrumIn;
     

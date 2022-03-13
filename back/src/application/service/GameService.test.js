@@ -51,3 +51,10 @@ test('Add Lockline', () => {
 	expect(game.players[1].spectrum).toStrictEqual([6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
 	expect(game.players[0].spectrum).toStrictEqual([0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 })
+
+test('Add Spectrum', () => {
+	gameServ = new GameService
+	let game = gameServ.addGame("antoineGame", "antoine", true, { id: "555", name: "socket"})
+	game = gameServ.refreshSpectrum("555", [6, 6, 6, 6, 6, 6, 6, 6, 6, 6], game)
+	expect(game.players[0].spectrum).toStrictEqual([6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
+})

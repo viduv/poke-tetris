@@ -24,6 +24,15 @@ class GameService {
         return game;
     }
 
+    refreshSpectrum(playerId, spectrum, game){
+        game.players.map( player => {
+            if(player.id === playerId){
+                player.spectrum = spectrum.map(value => value + player.lockline)
+            }
+        })
+        return game;
+    }
+
     getGame(id) {
         if(this.games.find(item => item.id === id) != undefined){
             return Object.assign(new Game(), this.games.find(item => item.id === id));
