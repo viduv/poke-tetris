@@ -15,7 +15,7 @@ class NextPieceIn {
 			this.rand = gen.create(seed)
 		}
 		else{
-			this.nextPieceOut.sendNextPiece(socket, this.rand(8))
+			this.nextPieceOut.sendNextPiece(socket, this.rand(6))
 		}
 	})
     }
