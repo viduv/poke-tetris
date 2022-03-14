@@ -16,6 +16,9 @@ const {StartGameIn} = require("./web/in/StartGameIn");
 const {LockLineIn} = require('./web/in/LockLineIn');
 const {SpectrumIn} = require('./web/in/SpectrumIn');
 const {LoseIn} = require('./web/in/LoseIn');
+const {NextPieceIn} = require('./web/in/NextPieceIn');
+const {NextPieceOut} = require('./web/out/NextPieceOut');
+// var rand = require('random-seed').create(445);
 
 class Application {
 
@@ -33,6 +36,12 @@ class Application {
     }
 
     run() {
+        // var n = rand(8);
+        // var x = rand(8);
+        // var seed = new Date().getTime()
+        // console.log(time)
+        // console.log(n)
+        // console.log(x)
         // Set Object instances
         let gameService = new GameService();
         let gameListOut = new GameListOut(this.io, gameService)
@@ -49,6 +58,8 @@ class Application {
         let lockLineIn = new LockLineIn(gameService, gameOut);
         let spectrumIn = new SpectrumIn(gameService, gameOut);
         const loseIn = new LoseIn(gameService, gameOut);
+        const nextPieceOut = new NextPieceOut(this.io);
+        const nextPieceIn = new NextPieceIn(nextPieceOut, "");
 
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);
@@ -62,6 +73,7 @@ class Application {
             lockLineIn.initConnection(socket);
             spectrumIn.initConnection(socket);
             loseIn.initConnection(socket);
+            nextPieceIn.initConnection(socket);
 
             console.log(`Socket ${socket.id} has connected`);
         });
