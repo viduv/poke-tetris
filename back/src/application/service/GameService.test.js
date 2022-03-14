@@ -58,3 +58,45 @@ test('Add Spectrum', () => {
 	game = gameServ.refreshSpectrum("555", [6, 6, 6, 6, 6, 6, 6, 6, 6, 6], game)
 	expect(game.players[0].spectrum).toStrictEqual([6, 6, 6, 6, 6, 6, 6, 6, 6, 6])
 })
+
+test(' Lose Game', () => {
+	gameServ = new GameService
+	let game = gameServ.addGame("antoineGame", "antoine", true, { id: "555", name: "socket"})
+
+	// test With One Player
+	let resp = gameServ.addPlayerLoose(game, "555")
+	expect(resp.playerwin).toStrictEqual("alone")
+	expect(resp.hasWinner).toStrictEqual(false)
+	expect(resp.gameContinue).toStrictEqual(false)
+
+	// Test With 2 Players
+	let player = new Player("Etienne", false, {id : "444"});
+	game.players.push(player)
+	let resp1 = gameServ.addPlayerLoose(game, "555")
+	expect(resp1.playerwin.id).toStrictEqual("444")
+	expect(resp1.hasWinner).toStrictEqual(true)
+	expect(resp1.gameContinue).toStrictEqual(false)
+
+	// Test With 3 or More Players with no winner
+	let player1 = new Player("Fabrice", false, {id : "333"});
+	game.players.push(player1)
+	let resp2 = gameServ.addPlayerLoose(game, "555")
+	expect(resp2.playerwin).toStrictEqual(undefined)
+	expect(resp2.hasWinner).toStrictEqual(false)
+	expect(resp2.gameContinue).toStrictEqual(true)
+	expect(resp2.game.players[0].hasLoose).toStrictEqual(true)
+	expect(resp2.game.players[1].hasLoose).toStrictEqual(false)
+	expect(resp2.game.players[2].hasLoose).toStrictEqual(false)
+
+	// Test With 3 or More Player with a winner
+	let game1 = gameServ.addGame("antoineGame", "antoine", true, { id: "555", name: "socket"})
+	let player2 = new Player("Fabrice", false, {id : "333"});
+	let player3 = new Player("Etienne", false, {id : "444"});
+	player2.hasLoose = true;
+	game1.players.push(player2);
+	game1.players.push(player3);
+	let resp3 = gameServ.addPlayerLoose(game1, "555")
+	expect(resp3.playerwin.id).toStrictEqual("444")
+	expect(resp3.hasWinner).toStrictEqual(true)
+	expect(resp3.gameContinue).toStrictEqual(false)
+})

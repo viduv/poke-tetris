@@ -13,6 +13,55 @@ class GameService {
         return newGame;
     }
 
+    rebootGame(game){
+        game.gameState = "CREATE",
+        game.players.map( player => {
+            player.lockline = 0
+            player.spectrum = [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            player.hasLoose = false
+        })
+        return game
+    }
+
+    addPlayerLoose(game, playerId) {
+        let hasloose = 1
+        let playerWin = ""
+        if(game.players.length === 1){
+            return {playerwin: "alone", hasWinner : false, gameContinue : false, game : ""}
+        }
+        else if(game.players.length === 2){
+            game.players.map( player => {
+                if(player.id !== playerId){
+                    playerWin = player
+                }
+            })
+            return {playerwin : playerWin, hasWinner : true, gameContinue : false, game : ""}
+        }
+        else {
+            game.players.map(player => {
+                if(player.id === playerId){
+                    player.hasLoose = true
+                }
+                // count number of player that have already loose
+                if(player.hasLoose){
+                    hasloose += 1;
+                }
+            })
+        if(game.players.length === hasloose){
+            game.players.map( player => {
+                if(!player.hasLoose){
+                    playerWin = player
+                }
+            })
+            return {playerwin : playerWin, hasWinner : true, gameContinue : false, game : ""}
+        }
+        else {
+            return {palyerwin : "", hasWinner : false, gameContinue : true, game : game}
+        }
+    }
+}
+
+
     // Add Line to spectrum
     addLockLine(addlockline, game, playerId){
         game.players.map(player => {

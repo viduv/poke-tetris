@@ -15,6 +15,7 @@ const {DisconnectIn} = require("./web/in/DisconnectIn");
 const {StartGameIn} = require("./web/in/StartGameIn");
 const {LockLineIn} = require('./web/in/LockLineIn');
 const {SpectrumIn} = require('./web/in/SpectrumIn');
+const {LoseIn} = require('./web/in/LoseIn');
 
 class Application {
 
@@ -47,6 +48,7 @@ class Application {
         let startGameIn = new StartGameIn(gameService, gameOut);
         let lockLineIn = new LockLineIn(gameService, gameOut);
         let spectrumIn = new SpectrumIn(gameService, gameOut);
+        const loseIn = new LoseIn(gameService, gameOut);
 
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);
@@ -59,6 +61,7 @@ class Application {
             startGameIn.initConnection(socket);
             lockLineIn.initConnection(socket);
             spectrumIn.initConnection(socket);
+            loseIn.initConnection(socket);
 
             console.log(`Socket ${socket.id} has connected`);
         });
