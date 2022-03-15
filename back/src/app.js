@@ -18,6 +18,7 @@ const {SpectrumIn} = require('./web/in/SpectrumIn');
 const {LoseIn} = require('./web/in/LoseIn');
 const {NextPieceIn} = require('./web/in/NextPieceIn');
 const {NextPieceOut} = require('./web/out/NextPieceOut');
+const {WinnerOut} = require('./web/out/WinnerOut');
 // var rand = require('random-seed').create(445);
 
 class Application {
@@ -48,6 +49,7 @@ class Application {
         let gameListIn = new GameListIn(gameListOut)
         let selfOut = new SelfOut(this.io);
         let gameOut = new GameOut(this.io);
+        let winnerOut = new WinnerOut(this.io);
         let createGameIn = new CreateGameIn(gameListOut, gameService, selfOut, gameOut);
         let joinGameIn = new JoinGameIn(gameService, selfOut, gameOut);
         let gameIn = new GameIn(gameOut, gameService);
@@ -57,9 +59,9 @@ class Application {
         let startGameIn = new StartGameIn(gameService, gameOut);
         let lockLineIn = new LockLineIn(gameService, gameOut);
         let spectrumIn = new SpectrumIn(gameService, gameOut);
-        const loseIn = new LoseIn(gameService, gameOut);
+        const loseIn = new LoseIn(gameService, gameOut, winnerOut);
         const nextPieceOut = new NextPieceOut(this.io);
-        const nextPieceIn = new NextPieceIn(nextPieceOut, "");
+        const nextPieceIn = new NextPieceIn(nextPieceOut, gameService);
 
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);

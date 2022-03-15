@@ -1,7 +1,8 @@
 class LoseIn {
-	constructor(gameService, gameOut) {
+	constructor(gameService, gameOut, winnerOut) {
 	    this.gameService = gameService;
 	    this.gameOut = gameOut;
+	    this.winnerOut = winnerOut;
 	}
     
 	initConnection(socket) {
@@ -15,7 +16,7 @@ class LoseIn {
 			let newGame = this.gameService.rebootGame(game)
 			// add socket for winner Pop Up
 			if(response.hasWinner){
-				console.log("WINNNER IS ..." + response.playerwin)
+				this.winnerOut(socket, " Vous avez gagne la partie", response.playerwin)
 			}
 			this.gameOut.refreshGame(newGame)
 		}

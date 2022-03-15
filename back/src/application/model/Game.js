@@ -12,6 +12,7 @@ class Game {
         this.isPublic = isPublic;
         this.players = [];
         this.players.push(player);
+        this.seed = "";
     }
 
     connect(socket) {
