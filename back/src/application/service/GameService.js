@@ -15,6 +15,7 @@ class GameService {
 
     rebootGame(game){
         game.gameState = "CREATE",
+        game.seed = ""
         game.players.map( player => {
             player.lockline = 0
             player.spectrum = [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -86,8 +87,10 @@ class GameService {
         if(this.games.find(item => item.id === id) != undefined){
             return this.games.find(item => item.id === id);
         }
-        else
+        else{
+            console.log("ERROR ON gameId")
             return "this game does not exit or your url is not correctly formated"
+        }
     }
 
     getGames() {

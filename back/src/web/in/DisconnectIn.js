@@ -1,8 +1,9 @@
 class DisconnectIn {
-	constructor(gameService, gameOut, gameListOut) {
+	constructor(gameService, gameOut, gameListOut, winnerOut) {
 		this.gameOut = gameOut;
 		this.gameService = gameService;
 		this.gameListOut = gameListOut;
+		this.winnerOut = winnerOut;
 	}
 
 	initConnection(socket) {
@@ -22,12 +23,20 @@ class DisconnectIn {
 						}
 					}       
 					}
-				})
-
-				game.players = game.players.filter(player => player.id !== socket.id);
-				this.gameService.saveGame(game);
-				this.gameOut.refreshGame(game);
-			}
+					})
+					let resp = this.gameService.addPlayerLoose(game, socket.id)
+					// If we have Winner and the game is on PLAY mode 
+					if(resp.hasWinner && game.gameState === "PLAY") {
+						let newGame = this.gameService.rebootGame(game)
+						this.winnerOut.sendWinner(socket, " Vous avez gagné la partie par forfait", resp.playerwin)
+						this.gameOut.refreshGame(newGame)
+					}
+					else {
+						game.players = game.players.filter(player => player.id !== socket.id);
+						this.gameService.saveGame(game);
+						this.gameOut.refreshGame(game);
+					}
+				}
 				else {
 					// delete Game if the player is alone
 					this.gameService.deleteGame(game.id);
