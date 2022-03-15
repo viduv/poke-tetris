@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Piece} from "./model/pieces/piece";
 import {Line} from "./model/pieces/line";
+import {BehaviorSubject} from "rxjs";
 
 export class Tile {
   solid = false;
@@ -20,6 +21,8 @@ export class GameplayService {
   private currentPiece: Piece;
   public grid: Array<Tile>;
   private locked = false;
+
+  gridSubject = new BehaviorSubject<Array<Tile>>([]);
 
   constructor() {
   }
@@ -41,8 +44,54 @@ export class GameplayService {
     /*   setInterval(() => this.update(), this.gameSpeed);*/
   }
 
+  public moveLeft() {
+    if (this.locked) {
+      return;
+    }
+    this.clearPiece();
+    this.currentPiece.storeState();
+
+    this.currentPiece.moveLeft();
+    if (this.collidesLeft()) {
+      this.currentPiece.revert();
+    }
+    this.drawPiece();
+  }
+
+  public moveRight() {
+    if (this.locked) {
+      return;
+    }
+    this.clearPiece();
+    this.currentPiece.storeState();
+
+    this.currentPiece.moveRight();
+    if (this.collidesRight()) {
+      this.currentPiece.revert();
+    }
+    this.drawPiece();
+  }
+
+  public rotate() {
+    if (this.locked) {
+      return;
+    }
+
+    this.clearPiece();
+    this.currentPiece.storeState();
+
+    this.currentPiece.rotate();
+    while (this.collidesRight()) {
+      this.currentPiece.moveLeft();
+      if (this.collidesLeft()) {
+        this.currentPiece.revert();
+        break;
+      }
+    }
+    this.drawPiece();
+  }
+
   public update(): void {
-    console.log("update", this.grid)
     if (this.locked) {
       return;
     }
@@ -72,10 +121,9 @@ export class GameplayService {
   }
 
   clearPiece(): void {
-    console.log("clear" + this.currentPiece?.positionsOnGrid);
     this.currentPiece?.positionsOnGrid.forEach((pos) => {
-      this.grid[pos] = Object.assign(this.grid[pos], {color: "transparent"});
-    })
+      this.grid[pos].color = "transparent";
+    });
   }
 
   private spawnNewPiece(): void {
@@ -86,14 +134,14 @@ export class GameplayService {
     this.currentPiece.clearState();
     this.currentPiece.positionsOnGrid
       .forEach((pos) => {
-        this.grid[pos] = Object.assign(this.grid[pos], {color: "blue"});
+        this.grid[pos].color = this.currentPiece.color;
       });
+    this.gridSubject.next(this.grid);
   }
 
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
-      console.log("set solid", pos);
-      this.grid[pos] = Object.assign(this.grid[pos], true);
+      this.grid[pos].solid = true;
     });
   }
 
@@ -121,9 +169,9 @@ export class GameplayService {
   }
 
   private collides(): boolean {
+    console.log("collide grid state", this.grid)
     return this.currentPiece.positionsOnGrid
       .some((pos) => {
-        //     console.log("collide", this.grid[pos])
         if (pos > 0 && this.grid[pos] && this.grid[pos].solid) {
           return true;
         }

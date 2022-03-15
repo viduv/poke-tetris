@@ -103,10 +103,16 @@ export class GameComponent implements OnInit {
     this.gameplayService.start();
   }
 
-  @HostListener('document:keypress', ['$event'])
+  @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-      if (event.key === "b")
-        this.gameplayService.update();
+    if (event.key === "b")
+      this.gameplayService.update();
+    if (event.key === "ArrowRight")
+      this.gameplayService.moveRight();
+    if (event.key === "ArrowLeft")
+      this.gameplayService.moveLeft();
+    if (event.key === "ArrowUp")
+      this.gameplayService.rotate();
   }
 
 }

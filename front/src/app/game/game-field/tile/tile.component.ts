@@ -1,24 +1,17 @@
-import {Component, HostBinding, Input, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, HostBinding, Input, OnInit} from '@angular/core';
 import {Tile} from "../../../gameplay.service";
 
 @Component({
   selector: 'app-tile',
   templateUrl: './tile.component.html',
-  styleUrls: ['./tile.component.scss']
+  styleUrls: ['./tile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TileComponent implements OnInit {
+export class TileComponent {
   @Input()
-  get data(): Tile {
-    return this._data;
-  }
+  log = false;
 
-  set data(value: Tile) {
-    this._data = value;
-    this.color = value.color;
-    console.log("update tile", this.color)
-  }
-
-  private _data: Tile;
+  @Input() data: Tile;
 
   @HostBinding("style.--color")
   private color: string | null;
@@ -26,7 +19,7 @@ export class TileComponent implements OnInit {
   constructor() {
   }
 
-  ngOnInit(): void {
+  public update(): void {
+    this.color = this.data.color;
   }
-
 }

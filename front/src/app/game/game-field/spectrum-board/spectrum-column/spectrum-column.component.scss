@@ -1,0 +1,7 @@
+:host {
+  display: block;
+  width: 10%;
+  height: calc(5% * var(--columnSize));
+  background-color: white;
+  opacity: 20%;
+}

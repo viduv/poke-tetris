@@ -26,6 +26,8 @@ import { GameReducer } from './stores/game-store/game.reducer';
 import { GameFieldComponent } from './game/game-field/game-field.component';
 import { BoardComponent } from './game/game-field/board/board.component';
 import { TileComponent } from './game/game-field/tile/tile.component';
+import { SpectrumBoardComponent } from './game/game-field/spectrum-board/spectrum-board.component';
+import { SpectrumColumnComponent } from './game/game-field/spectrum-board/spectrum-column/spectrum-column.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -39,6 +41,8 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     GameFieldComponent,
     BoardComponent,
     TileComponent,
+    SpectrumBoardComponent,
+    SpectrumColumnComponent,
   ],
   imports: [
     BrowserModule,

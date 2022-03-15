@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {GameplayService, Tile} from "../../../gameplay.service";
+import {TileComponent} from "../tile/tile.component";
 
 @Component({
   selector: 'app-board',
@@ -7,21 +8,13 @@ import {GameplayService, Tile} from "../../../gameplay.service";
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
-  @Input()
-  get grid(): Array<Tile> {
-    return this._grid;
-  }
-  set grid(value: Array<Tile>) {
-    this._grid = value;
-    console.log(value);
-  }
 
-  private _grid: Array<Tile>;
+  @ViewChildren(TileComponent) tiles: QueryList<TileComponent>;
 
-  constructor(public gameplayService: GameplayService) { }
+  constructor(public gameplayService: GameplayService) {}
 
-  ngOnInit(): void {
-
+  public ngOnInit() {
+    this.gameplayService.gridSubject.subscribe(() => this.tiles?.forEach(tile => tile.update()))
   }
 
 }

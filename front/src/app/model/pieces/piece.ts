@@ -28,13 +28,15 @@ export class Piece {
   protected gridSize;
 
   protected previousState: { x: number, y: number, rotation: PieceRotation, map: PieceMap } | null = null;
+  color = "blue";
 
-  constructor(x: number, y: number, gridSize: GridSize, maps: PieceMaps) {
+  constructor(x: number, y: number, gridSize: GridSize, maps: PieceMaps, color: string) {
     this.x = x;
     this.y = y;
     this.gridSize = gridSize;
     this.maps = maps;
     this.map = this.maps[this.rotation];
+    this.color = color;
   }
 
   public storeState() {
@@ -47,7 +49,7 @@ export class Piece {
   }
 
   public revert() {
-    console.log("Revert");
+    console.log("Revert 1", this.x, this.y);
     if (this.previousState) {
       this.x = this.previousState.x;
       this.y = this.previousState.y;
@@ -55,6 +57,7 @@ export class Piece {
       this.map = this.previousState.map;
       this.clearState();
     }
+    console.log("Revert 2", this.x, this.y);
   }
 
   public clearState() {
@@ -88,7 +91,7 @@ export class Piece {
       for (let col = 0; col < 4; col++)
         if (this.map[row][col]) {
           const pos = (this.y + row) * this.gridSize.width + this.x + col;
-          if (pos > 0)
+          if (pos >= 0)
             acc.push(pos);
         }
     return acc;
