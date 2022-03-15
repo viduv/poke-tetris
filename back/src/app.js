@@ -61,7 +61,7 @@ class Application {
         let spectrumIn = new SpectrumIn(gameService, gameOut);
         const loseIn = new LoseIn(gameService, gameOut, winnerOut);
         const nextPieceOut = new NextPieceOut(this.io);
-        const nextPieceIn = new NextPieceIn(nextPieceOut, "");
+        const nextPieceIn = new NextPieceIn(nextPieceOut, gameService);
 
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);

@@ -1,3 +1,6 @@
+let gen = require('random-seed'); 
+
+
 class StartGameIn {
     constructor(gameService, gameOut) {
         this.gameService = gameService;
@@ -7,9 +10,10 @@ class StartGameIn {
     initConnection(socket) {
         socket.on("startGame", (data) => {
             let game = this.gameService.getGame(data.gameId);
+            let rand = new Date().getTime()
             game.startGame();
+			game.seed = gen.create(rand)
             this.gameOut.refreshGame(game);
-            console.log("ok")
         });
     }
 }
