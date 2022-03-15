@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {Piece} from "./model/pieces/piece";
 import {Line} from "./model/pieces/line";
 import {BehaviorSubject} from "rxjs";
+import {GameService} from "./game.service";
+import {Game} from "./stores/game-store/game";
 
 export class Tile {
   solid = false;
@@ -13,6 +15,7 @@ export class Tile {
 })
 export class GameplayService {
 
+  private game: Game;
   private gridSize: {
     width: number,
     height: number
@@ -21,10 +24,12 @@ export class GameplayService {
   private currentPiece: Piece;
   public grid: Array<Tile>;
   private locked = false;
+  private interval: number | undefined;
+  isRun = false;
 
   gridSubject = new BehaviorSubject<Array<Tile>>([]);
 
-  constructor() {
+  constructor(private gameService: GameService) {
   }
 
   initialize(width: number, height: number, gameSpeed: number, tileSize?: any): void {
@@ -37,11 +42,15 @@ export class GameplayService {
       .map((idx) => new Tile());
   }
 
-  start(): void {
-    this.initialize(10, 20, 300);
-    this.spawnNewPiece();
-    this.drawPiece();
-    /*   setInterval(() => this.update(), this.gameSpeed);*/
+  start(game: Game): void {
+    if (!this.isRun) {
+      this.game = game;
+      this.initialize(10, 20, 300);
+      this.spawnNewPiece();
+      this.drawPiece();
+      this.interval = setInterval(() => this.update(), this.gameSpeed);
+      this.isRun = true;
+    }
   }
 
   public moveLeft() {
@@ -107,7 +116,7 @@ export class GameplayService {
       this.markSolid();
       this.drawPiece();
 
-      //  this.clearFullLines();
+      this.clearFullLines();
 
       this.spawnNewPiece();
       /*   if (this._isGameOver()) {
@@ -118,6 +127,33 @@ export class GameplayService {
 
     this.drawPiece();
     this.locked = false;
+  }
+
+  private clearFullLines() {
+    let countClear = 0;
+    for (let row = this.gridSize.height - 1; row >= 0; row--) {
+      let isFull = true;
+      for (let col = 0; col < this.gridSize.width; col++) {
+        const pos = row * this.gridSize.width + col;
+        if (!this.grid[pos].solid) {
+          isFull = false;
+          break;
+        }
+      }
+
+      if (isFull) {
+        const emptyRow = Array.apply(null, Array(this.gridSize.width))
+          .map((idx) => new Tile());
+
+        const topPortion = this.grid.slice(0, row * this.gridSize.width);
+
+        this.grid.splice(0, ++row * this.gridSize.width, ...emptyRow.concat(topPortion));
+        //    this._lineCleared.next();
+        countClear++;
+      }
+    }
+    if (countClear > 1)
+      this.gameService.clearLine(this.game, countClear - 1);
   }
 
   clearPiece(): void {
@@ -142,8 +178,15 @@ export class GameplayService {
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
       this.grid[pos].solid = true;
+  //    this.gameService.updateSpectrum(this.game, this.generateSpectrum())
     });
   }
+
+ /* private generateSpectrum(): Array<number> {
+    let spectrum = Array(10);
+    spectrum.
+    return this.gr
+  }*/
 
   private collidesBottom(): boolean {
     if (this.currentPiece.bottomRow >= this.gridSize.height) {
@@ -169,14 +212,9 @@ export class GameplayService {
   }
 
   private collides(): boolean {
-    console.log("collide grid state", this.grid)
     return this.currentPiece.positionsOnGrid
       .some((pos) => {
-        if (pos > 0 && this.grid[pos] && this.grid[pos].solid) {
-          return true;
-        }
-
-        return false;
+        return pos > 0 && this.grid[pos] && this.grid[pos].solid;
       });
   }
 }

@@ -11,8 +11,8 @@ import {Observable} from "rxjs";
 import {first} from "rxjs/operators";
 import {PreGameService} from "../pre-game.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import { flushState } from '../stores/game-store/game.actions';
 import {GameplayService} from "../gameplay.service";
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -23,9 +23,9 @@ export class GameComponent implements OnInit {
   id: string;
   self: Self;
   game: Game;
-  username : string = ""
-  isDirectAccess : boolean = false;
-  subscribe : any;
+  username: string = ""
+  isDirectAccess: boolean = false;
+  subscribe: any;
 
   constructor(private activatedRoute: ActivatedRoute,
               private gameService: GameService,
@@ -34,16 +34,16 @@ export class GameComponent implements OnInit {
               private preGameService: PreGameService,
               private snackBar: MatSnackBar,
               private gameplayService: GameplayService
-              ) {
+  ) {
   }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(first()).subscribe(map => {
       this.id = map.get("id") || "";
       // Parse url
-      if (this.id.includes("[") && this.id.includes("]")){
-        if(this.id.indexOf("[") < this.id.indexOf("]") - 1){
-          this.username = this.id.substring( this.id.indexOf("[") + 1, this.id.indexOf("]"))
+      if (this.id.includes("[") && this.id.includes("]")) {
+        if (this.id.indexOf("[") < this.id.indexOf("]") - 1) {
+          this.username = this.id.substring(this.id.indexOf("[") + 1, this.id.indexOf("]"))
           this.id = this.id.replace("[" + this.username + "]", "")
           this.preGameService.JoinGame(
             {
@@ -51,10 +51,10 @@ export class GameComponent implements OnInit {
               playerName: this.username,
             },
             "game"
-        )
-            // We must add isDirectAccess boolean to know if the url is correct and not navigate to root
-            // because self subscribe take time to get the data (for sure that is not the best solution)
-            this.isDirectAccess = true
+          )
+          // We must add isDirectAccess boolean to know if the url is correct and not navigate to root
+          // because self subscribe take time to get the data (for sure that is not the best solution)
+          this.isDirectAccess = true
         }
       }
       this.gameService.initGameSocket(this.id);
@@ -62,14 +62,13 @@ export class GameComponent implements OnInit {
     this.gameStore.select(selectSelf).subscribe(self => {
       this.self = self;
     });
-    if (!this.isDirectAccess && this.self.id === ""){
+    if (!this.isDirectAccess && this.self.id === "") {
       this.router.navigate(['/']);
     }
     this.subscribe = this.getGame().subscribe(game => {
       this.game = game;
       // Handling Kiking someone of the game
-      if (this.subscribe && this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id))
-      {
+      if (this.subscribe && this.game !== undefined && this.game.id !== '' && !this.game.players.find(player => player.id === this.self.id)) {
         this.snackBar.open("Vous avez été expulsé de la partie", "Fermer", {
           duration: 6000,
           verticalPosition: "top",
@@ -78,6 +77,9 @@ export class GameComponent implements OnInit {
         this.router.navigate(['/']);
         this.subscribe.unsubscribe()
       }
+      if (this.game.gameState === "PLAY")
+        this.gameplayService.start(this.game);
+      console.log("recieve game", this.game);
     })
   }
 
@@ -100,7 +102,7 @@ export class GameComponent implements OnInit {
 
   startGame() {
     this.gameService.startGame(this.game);
-    this.gameplayService.start();
+//    this.gameplayService.start();
   }
 
   @HostListener('window:keydown', ['$event'])

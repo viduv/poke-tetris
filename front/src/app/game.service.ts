@@ -24,11 +24,19 @@ export class GameService {
     this.socket.emit("leaveGame", ({gameId: game.id, playerId: playerId}));
   }
 
-  public kickPlayer(game:Game, kickPlayer: Player): void {
+  public kickPlayer(game: Game, kickPlayer: Player): void {
     this.socket.emit("kickPlayer", ({gameId: game.id, kickPlayerId: kickPlayer.id}));
   }
 
   startGame(game: Game) {
     this.socket.emit("startGame", ({gameId: game.id}));
+  }
+
+  clearLine(game: Game, count: number) {
+    this.socket.emit("lockLine", {gameId: game.id, lockline: count});
+  }
+
+  updateSpectrum(game: Game, spectrum: Array<number>) {
+    this.socket.emit("spectrum", {gameId: game.id, spectrum});
   }
 }

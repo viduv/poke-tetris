@@ -49,7 +49,6 @@ export class Piece {
   }
 
   public revert() {
-    console.log("Revert 1", this.x, this.y);
     if (this.previousState) {
       this.x = this.previousState.x;
       this.y = this.previousState.y;
@@ -57,7 +56,6 @@ export class Piece {
       this.map = this.previousState.map;
       this.clearState();
     }
-    console.log("Revert 2", this.x, this.y);
   }
 
   public clearState() {
@@ -99,7 +97,6 @@ export class Piece {
 
   public moveDown(): void {
     this.y++;
-    console.log("down", this.positionsOnGrid);
   }
 
   public moveRight(): void {
