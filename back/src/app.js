@@ -55,7 +55,7 @@ class Application {
         let gameIn = new GameIn(gameOut, gameService);
         let leaveGameIn = new LeaveGameIn(gameService, gameOut, gameListOut);
         let kickPlayerIn = new KickPlayerIn(gameService, gameOut);
-        let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut); 
+        let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut, winnerOut); 
         let startGameIn = new StartGameIn(gameService, gameOut);
         let lockLineIn = new LockLineIn(gameService, gameOut);
         let spectrumIn = new SpectrumIn(gameService, gameOut);

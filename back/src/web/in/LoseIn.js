@@ -16,7 +16,7 @@ class LoseIn {
 			let newGame = this.gameService.rebootGame(game)
 			// add socket for winner Pop Up
 			if(response.hasWinner){
-				this.winnerOut(socket, " Vous avez gagne la partie", response.playerwin)
+				this.winnerOut.sendWinner(socket, " Vous avez gagné la partie", response.playerwin)
 			}
 			this.gameOut.refreshGame(newGame)
 		}
