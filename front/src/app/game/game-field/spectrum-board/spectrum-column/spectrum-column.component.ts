@@ -10,8 +10,6 @@ export class SpectrumColumnComponent implements OnInit {
   @HostBinding("style.--columnSize")
   @Input() columnSize: number;
 
-
-
   constructor() { }
 
   ngOnInit(): void {

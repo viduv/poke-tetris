@@ -28,6 +28,7 @@ import { BoardComponent } from './game/game-field/board/board.component';
 import { TileComponent } from './game/game-field/tile/tile.component';
 import { SpectrumBoardComponent } from './game/game-field/spectrum-board/spectrum-board.component';
 import { SpectrumColumnComponent } from './game/game-field/spectrum-board/spectrum-column/spectrum-column.component';
+import { RemoveLockLinesPipe } from './game/game-field/board/remove-lock-lines.pipe';
 
 const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
@@ -43,6 +44,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     TileComponent,
     SpectrumBoardComponent,
     SpectrumColumnComponent,
+    RemoveLockLinesPipe,
   ],
   imports: [
     BrowserModule,

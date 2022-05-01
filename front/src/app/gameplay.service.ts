@@ -4,6 +4,9 @@ import {Line} from "./model/pieces/line";
 import {BehaviorSubject} from "rxjs";
 import {GameService} from "./game.service";
 import {Game} from "./stores/game-store/game";
+import {GameState} from "./stores/game-store/game.state";
+import {Store} from "@ngrx/store";
+import {selectGame, selectSelf} from "./stores/game-store/game.selector";
 
 export class Tile {
   solid = false;
@@ -16,6 +19,8 @@ export class Tile {
 export class GameplayService {
 
   private game: Game;
+  private currentUserId: string;
+
   private gridSize: {
     width: number,
     height: number
@@ -26,25 +31,27 @@ export class GameplayService {
   private locked = false;
   private interval: number | undefined;
   isRun = false;
-
+  isLose = false;
   gridSubject = new BehaviorSubject<Array<Tile>>([]);
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private gameStore: Store<GameState>) {
+    this.gameStore.select(selectGame).subscribe(game => this.game = game);
+    this.gameStore.select(selectSelf).subscribe(self => this.currentUserId = self.id);
   }
 
   initialize(width: number, height: number, gameSpeed: number, tileSize?: any): void {
     this.gridSize.width = width;
     this.gridSize.height = height;
     this.gameSpeed = gameSpeed;
+    this.isLose = false;
 
     const cellsCount = this.gridSize.width * this.gridSize.height;
     this.grid = Array.apply(null, Array(cellsCount))
       .map((idx) => new Tile());
   }
 
-  start(game: Game): void {
+  start(): void {
     if (!this.isRun) {
-      this.game = game;
       this.initialize(10, 20, 300);
       this.spawnNewPiece();
       this.drawPiece();
@@ -54,7 +61,7 @@ export class GameplayService {
   }
 
   public moveLeft() {
-    if (this.locked) {
+    if (this.locked || this.isLose) {
       return;
     }
     this.clearPiece();
@@ -68,7 +75,7 @@ export class GameplayService {
   }
 
   public moveRight() {
-    if (this.locked) {
+    if (this.locked || this.isLose) {
       return;
     }
     this.clearPiece();
@@ -82,7 +89,7 @@ export class GameplayService {
   }
 
   public rotate() {
-    if (this.locked) {
+    if (this.locked || this.isLose) {
       return;
     }
 
@@ -101,11 +108,10 @@ export class GameplayService {
   }
 
   public update(): void {
-    if (this.locked) {
+    if (this.locked || this.isLose) {
       return;
     }
     this.locked = true;
-    //   this.currentPiece.revert();
 
     this.clearPiece();
     this.currentPiece.storeState();
@@ -119,14 +125,25 @@ export class GameplayService {
       this.clearFullLines();
 
       this.spawnNewPiece();
-      /*   if (this._isGameOver()) {
-           this._onGameOver();
-           return;
-         }*/
+      if (this.isGameOver()) {
+        this.isLose = true;
+        return;
+      }
     }
 
     this.drawPiece();
     this.locked = false;
+  }
+
+  private isGameOver() {
+    this.currentPiece.storeState();
+    this.currentPiece.moveDown();
+    if (this.collidesBottom()) {
+      return true;
+    }
+
+    this.currentPiece.revert();
+    return false;
   }
 
   private clearFullLines() {
@@ -148,7 +165,7 @@ export class GameplayService {
         const topPortion = this.grid.slice(0, row * this.gridSize.width);
 
         this.grid.splice(0, ++row * this.gridSize.width, ...emptyRow.concat(topPortion));
-        //    this._lineCleared.next();
+        this.gridSubject.next(this.grid);
         countClear++;
       }
     }
@@ -163,7 +180,7 @@ export class GameplayService {
   }
 
   private spawnNewPiece(): void {
-    this.currentPiece = new Line(4, -4, this.gridSize);
+    this.currentPiece = new Line(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize);
   }
 
   private drawPiece(): void {
@@ -178,15 +195,9 @@ export class GameplayService {
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
       this.grid[pos].solid = true;
-  //    this.gameService.updateSpectrum(this.game, this.generateSpectrum())
+      //    this.gameService.updateSpectrum(this.game, this.generateSpectrum())
     });
   }
-
- /* private generateSpectrum(): Array<number> {
-    let spectrum = Array(10);
-    spectrum.
-    return this.gr
-  }*/
 
   private collidesBottom(): boolean {
     if (this.currentPiece.bottomRow >= this.gridSize.height) {

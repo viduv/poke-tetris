@@ -78,7 +78,7 @@ export class GameComponent implements OnInit {
         this.subscribe.unsubscribe()
       }
       if (this.game.gameState === "PLAY")
-        this.gameplayService.start(this.game);
+        this.gameplayService.start();
       console.log("recieve game", this.game);
     })
   }
