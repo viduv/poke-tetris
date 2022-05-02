@@ -24,7 +24,6 @@ export class BoardComponent implements OnInit {
 
   public ngOnInit() {
     this.gameplayService.gridSubject.subscribe(() => {
-      console.log("update", this.tiles)
       this.tiles?.forEach(tile => tile.update())
     });
 

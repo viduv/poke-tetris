@@ -1,1 +1,1 @@
-<app-tile *ngFor="let tileData of gameplayService.gridSubject | async | removeLockLines: this.getLockLine(); let first = first" [data]="tileData" [log]="first"></app-tile>
+<app-tile *ngFor="let tileData of gameplayService.gridObservable | async; let first = first" [data]="tileData" [log]="first"></app-tile>

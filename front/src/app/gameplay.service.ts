@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Piece} from "./model/pieces/piece";
 import {Line} from "./model/pieces/line";
-import {BehaviorSubject} from "rxjs";
+import {ReplaySubject} from "rxjs";
 import {GameService} from "./game.service";
 import {Game} from "./stores/game-store/game";
 import {GameState} from "./stores/game-store/game.state";
@@ -32,14 +32,15 @@ export class GameplayService {
   private interval: number | undefined;
   isRun = false;
   isLose = false;
-  gridSubject = new BehaviorSubject<Array<Tile>>([]);
+  gridSubject = new ReplaySubject<Array<Tile>>(1);
+  readonly gridObservable = this.gridSubject.asObservable();
 
   constructor(private gameService: GameService, private gameStore: Store<GameState>) {
     this.gameStore.select(selectGame).subscribe(game => this.game = game);
     this.gameStore.select(selectSelf).subscribe(self => this.currentUserId = self.id);
   }
 
-  initialize(width: number, height: number, gameSpeed: number, tileSize?: any): void {
+  initialize(width: number, height: number, gameSpeed: number): void {
     this.gridSize.width = width;
     this.gridSize.height = height;
     this.gameSpeed = gameSpeed;
@@ -47,7 +48,7 @@ export class GameplayService {
 
     const cellsCount = this.gridSize.width * this.gridSize.height;
     this.grid = Array.apply(null, Array(cellsCount))
-      .map((idx) => new Tile());
+      .map(() => new Tile());
   }
 
   start(): void {
@@ -113,6 +114,7 @@ export class GameplayService {
     }
     this.locked = true;
 
+  //  this.updateLockLines();
     this.clearPiece();
     this.currentPiece.storeState();
 
@@ -134,6 +136,17 @@ export class GameplayService {
     this.drawPiece();
     this.locked = false;
   }
+
+  private updateSubject() {
+    this.gridSubject.next(this.grid);
+  }
+
+/*  private updateLockLines() {
+    let countLock = this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0;
+    for (let i = 0; i < countLock; i++) {
+      this.grid.
+    }
+  }*/
 
   private isGameOver() {
     this.currentPiece.storeState();
@@ -160,12 +173,12 @@ export class GameplayService {
 
       if (isFull) {
         const emptyRow = Array.apply(null, Array(this.gridSize.width))
-          .map((idx) => new Tile());
+          .map(() => new Tile());
 
         const topPortion = this.grid.slice(0, row * this.gridSize.width);
 
         this.grid.splice(0, ++row * this.gridSize.width, ...emptyRow.concat(topPortion));
-        this.gridSubject.next(this.grid);
+        this.update();
         countClear++;
       }
     }
@@ -228,4 +241,5 @@ export class GameplayService {
         return pos > 0 && this.grid[pos] && this.grid[pos].solid;
       });
   }
+
 }
