@@ -1,20 +1,17 @@
-
-
-
 class StartGameIn {
-    constructor(gameService, gameOut) {
+    constructor(gameService, gameOut, nextPieceOut) {
         this.gameService = gameService;
         this.gameOut = gameOut;
+        this.nextPieceOut = nextPieceOut;
+
     }
 
     initConnection(socket) {
         socket.on("startGame", (data) => {
             let game = this.gameService.getGame(data.gameId);
             game.startGame();
-            game.seedTime = new Date().getTime()
-	//		game.seedTime = gen.create(rand)
-    //        console.log(game.seed(6))
             this.gameOut.refreshGame(game);
+            game.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(6)));
         });
     }
 }

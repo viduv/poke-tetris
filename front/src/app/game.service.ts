@@ -20,10 +20,9 @@ export class GameService {
     this.socket.fromEvent<Game>("game").subscribe((game: Game) =>
       this.gameStore.dispatch(populateGame({game: game})));
     this.socket.emit("game", {id: gameId});
-   /* this.socket.fromEvent<number>("nextPiece").subscribe((nextPieceNumber: number) => {
+    this.socket.fromEvent<number>("nextPiece").subscribe((nextPieceNumber: number) => {
       this.nextPieceNumber = nextPieceNumber;
     });
-    this.loadNextPiece(gameId);*/
   }
 
   public leaveGame(game: Game, playerId: string): void {
@@ -47,8 +46,8 @@ export class GameService {
   }
 
   loadNextPiece(gameId: string): number {
-    //this.socket.emit("nextPiece", {gameId: gameId});
-    //return this.nextPieceNumber;
-    return Math.trunc(Math.random() * 7)
+    this.socket.emit("nextPiece", {gameId: gameId});
+    return this.nextPieceNumber;
+  //  return Math.trunc(Math.random() * 7)
   }
 }

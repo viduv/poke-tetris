@@ -1,8 +1,9 @@
 class LoseIn {
-	constructor(gameService, gameOut, winnerOut) {
+	constructor(gameService, gameOut, winnerOut, nextPieceOut) {
 	    this.gameService = gameService;
 	    this.gameOut = gameOut;
 	    this.winnerOut = winnerOut;
+		this.nextPieceOut = nextPieceOut;
 	}
     
 	initConnection(socket) {
@@ -13,12 +14,13 @@ class LoseIn {
 			this.gameOut.refreshGame(response.game);
 		}
 		else{
-			let newGame = this.gameService.rebootGame(game)
+			let newGame = this.gameService.rebootGame(game);
 			// add socket for winner Pop Up
 			if(response.hasWinner){
 				this.winnerOut.sendWinner(socket, " Vous avez gagné la partie", response.playerwin)
 			}
 			this.gameOut.refreshGame(newGame)
+			newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(6)));
 		}
 	    });
 	}

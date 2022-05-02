@@ -44,23 +44,23 @@ class Application {
         // console.log(n)
         // console.log(x)
         // Set Object instances
-        let gameService = new GameService();
-        let gameListOut = new GameListOut(this.io, gameService)
-        let gameListIn = new GameListIn(gameListOut)
-        let selfOut = new SelfOut(this.io);
-        let gameOut = new GameOut(this.io);
-        let winnerOut = new WinnerOut(this.io);
-        let createGameIn = new CreateGameIn(gameListOut, gameService, selfOut, gameOut);
-        let joinGameIn = new JoinGameIn(gameService, selfOut, gameOut);
-        let gameIn = new GameIn(gameOut, gameService);
-        let leaveGameIn = new LeaveGameIn(gameService, gameOut, gameListOut);
-        let kickPlayerIn = new KickPlayerIn(gameService, gameOut);
-        let disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut, winnerOut); 
-        let startGameIn = new StartGameIn(gameService, gameOut);
-        let lockLineIn = new LockLineIn(gameService, gameOut);
-        let spectrumIn = new SpectrumIn(gameService, gameOut);
-        const loseIn = new LoseIn(gameService, gameOut, winnerOut);
         const nextPieceOut = new NextPieceOut(this.io);
+        const gameService = new GameService();
+        const gameListOut = new GameListOut(this.io, gameService)
+        const gameListIn = new GameListIn(gameListOut)
+        const selfOut = new SelfOut(this.io);
+        const gameOut = new GameOut(this.io);
+        const winnerOut = new WinnerOut(this.io);
+        const createGameIn = new CreateGameIn(gameListOut, gameService, selfOut, gameOut, nextPieceOut);
+        const joinGameIn = new JoinGameIn(gameService, selfOut, gameOut, nextPieceOut);
+        const gameIn = new GameIn(gameOut, gameService);
+        const leaveGameIn = new LeaveGameIn(gameService, gameOut, gameListOut);
+        const kickPlayerIn = new KickPlayerIn(gameService, gameOut);
+        const disconnectIn = new DisconnectIn(gameService, gameOut, gameListOut, winnerOut, nextPieceOut);
+        const lockLineIn = new LockLineIn(gameService, gameOut);
+        const spectrumIn = new SpectrumIn(gameService, gameOut);
+        const loseIn = new LoseIn(gameService, gameOut, winnerOut, nextPieceOut);
+        const startGameIn = new StartGameIn(gameService, gameOut, nextPieceOut);
         const nextPieceIn = new NextPieceIn(nextPieceOut, gameService);
 
         this.io.on("connection", socket => {

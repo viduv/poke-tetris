@@ -2,7 +2,7 @@ const {v4: uuidv4} = require('uuid');
 
 class Game {
 
-    constructor(name, gameState, player, isPublic) {
+    constructor(name, gameState, isPublic) {
         this.id = uuidv4();
         this.name = name;
         /**
@@ -11,8 +11,7 @@ class Game {
         this.gameState = gameState;
         this.isPublic = isPublic;
         this.players = [];
-        this.players.push(player);
-        this.seedTime = ""
+        this.seedTime = new Date().getTime();
     }
 
     connect(socket) {
