@@ -1,3 +1,6 @@
+let gen = require('random-seed'); 
+
+
 class NextPieceIn {
 
     constructor(nextPieceOut, gameService) {
@@ -8,7 +11,8 @@ class NextPieceIn {
     initConnection(socket) {
         socket.on("nextPiece", (data) => {
 		let game = this.gameService.getGame(data.gameId);
-		this.nextPieceOut.sendNextPiece(socket, game.seed(6))
+        let seed = gen.create(game.seedTime);
+		this.nextPieceOut.sendNextPiece(socket, seed(6))
 	})
     }
 }
