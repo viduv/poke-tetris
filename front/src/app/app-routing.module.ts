@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainMenuComponent } from "./main-menu/main-menu.component";
 import { GameComponent} from './game/game.component';
 
-const routes: Routes = [
+const routes: Routes = [ 
   { path: '', component: MainMenuComponent },
   { path: 'game/:id', component: GameComponent},
   { path: '**',redirectTo: ''},
