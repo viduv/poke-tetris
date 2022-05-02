@@ -138,7 +138,19 @@ export class GameplayService {
   }
 
   private updateSubject() {
-    this.gridSubject.next(this.grid);
+    let countLock = this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0;
+    const emptyRow = Array.apply(null, Array(this.gridSize.width))
+      .map(() => new Tile());
+
+    const topPortion = this.grid.slice((this.gridSize.height - countLock) * this.gridSize.width, this.gridSize.height * this.gridSize.width);
+    let g = Object.assign(new Array<Tile>(), this.grid);
+    g.splice((this.gridSize.height - countLock) * this.gridSize.width, countLock * this.gridSize.width);
+    for (let i = 0; i < countLock; i++) {
+      for (let j = 0; j < this.gridSize.width; j++) {
+        g.push({solid: true, color: "black"})
+      }
+    }
+    this.gridSubject.next(g);
   }
 
 /*  private updateLockLines() {
@@ -178,7 +190,7 @@ export class GameplayService {
         const topPortion = this.grid.slice(0, row * this.gridSize.width);
 
         this.grid.splice(0, ++row * this.gridSize.width, ...emptyRow.concat(topPortion));
-        this.update();
+        this.updateSubject();
         countClear++;
       }
     }
@@ -202,7 +214,7 @@ export class GameplayService {
       .forEach((pos) => {
         this.grid[pos].color = this.currentPiece.color;
       });
-    this.gridSubject.next(this.grid);
+    this.updateSubject();
   }
 
   private markSolid(): void {
