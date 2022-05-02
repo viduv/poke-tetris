@@ -1,5 +1,4 @@
 import {ChangeDetectionStrategy, Component, HostBinding, Input} from '@angular/core';
-import {Tile} from "../../../gameplay.service";
 
 @Component({
   selector: 'app-tile',
@@ -9,17 +8,6 @@ import {Tile} from "../../../gameplay.service";
 })
 export class TileComponent {
   @Input()
-  log = false;
-
-  @Input() data: Tile;
-
   @HostBinding("style.--color")
-  private color: string | null;
-
-  constructor() {
-  }
-
-  public update(): void {
-    this.color = this.data.color;
-  }
+  color: string = "transparent";
 }

@@ -1,1 +1,3 @@
-<app-tile *ngFor="let tileData of gameplayService.gridObservable | async; let first = first" [data]="tileData" [log]="first"></app-tile>
+<ng-template ngFor let-tileData [ngForOf]="gameplayService.gridSubject | async">
+  <app-tile [color]="tileData.color"></app-tile>
+</ng-template>

@@ -11,7 +11,7 @@ import {Game} from "../../../stores/game-store/game";
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent {
 
   @ViewChildren(TileComponent) tiles: QueryList<TileComponent>;
   currentUserId: string;
@@ -20,13 +20,6 @@ export class BoardComponent implements OnInit {
   constructor(public gameplayService: GameplayService, private gameStore: Store<GameState>) {
     this.gameStore.select(selectGame).subscribe(game => this.game = game);
     this.gameStore.select(selectSelf).subscribe(self => this.currentUserId = self.id);
-  }
-
-  public ngOnInit() {
-    this.gameplayService.gridSubject.subscribe(() => {
-      this.tiles?.forEach(tile => tile.update());
-    });
-
   }
 
   getLockLine() {

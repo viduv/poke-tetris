@@ -11,6 +11,8 @@ import {Player} from "./model/player";
 })
 export class GameService {
 
+  nextPieceNumber: number;
+
   constructor(protected gameStore: Store<GameState>, private socket: Socket) {
   }
 
@@ -18,6 +20,10 @@ export class GameService {
     this.socket.fromEvent<Game>("game").subscribe((game: Game) =>
       this.gameStore.dispatch(populateGame({game: game})));
     this.socket.emit("game", {id: gameId});
+   /* this.socket.fromEvent<number>("nextPiece").subscribe((nextPieceNumber: number) => {
+      this.nextPieceNumber = nextPieceNumber;
+    });
+    this.loadNextPiece(gameId);*/
   }
 
   public leaveGame(game: Game, playerId: string): void {
@@ -38,5 +44,11 @@ export class GameService {
 
   updateSpectrum(game: Game, spectrum: Array<number>) {
     this.socket.emit("spectrum", {gameId: game.id, spectrum});
+  }
+
+  loadNextPiece(gameId: string): number {
+    //this.socket.emit("nextPiece", {gameId: gameId});
+    //return this.nextPieceNumber;
+    return Math.trunc(Math.random() * 7)
   }
 }

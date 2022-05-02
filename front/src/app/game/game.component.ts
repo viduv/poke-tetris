@@ -109,6 +109,8 @@ export class GameComponent implements OnInit {
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.key === "b")
       this.gameplayService.update();
+    if (event.key === "f")
+      this.gameplayService.freeze();
     if (event.key === "ArrowRight")
       this.gameplayService.moveRight();
     if (event.key === "ArrowLeft")

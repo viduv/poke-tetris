@@ -7,6 +7,12 @@ import {Game} from "./stores/game-store/game";
 import {GameState} from "./stores/game-store/game.state";
 import {Store} from "@ngrx/store";
 import {selectGame, selectSelf} from "./stores/game-store/game.selector";
+import {Dot} from "./model/pieces/Dot";
+import {T} from "./model/pieces/t";
+import {L} from "./model/pieces/l";
+import {Lr} from "./model/pieces/lr";
+import {Z} from "./model/pieces/z";
+import {S} from "./model/pieces/s";
 
 export class Tile {
   solid = false;
@@ -32,7 +38,7 @@ export class GameplayService {
   private interval: number | undefined;
   isRun = false;
   isLose = false;
-  gridSubject = new ReplaySubject<Array<Tile>>(1);
+  gridSubject = new ReplaySubject<Tile[]>(1);
   readonly gridObservable = this.gridSubject.asObservable();
 
   constructor(private gameService: GameService, private gameStore: Store<GameState>) {
@@ -114,7 +120,7 @@ export class GameplayService {
     }
     this.locked = true;
 
-  //  this.updateLockLines();
+    //  this.updateLockLines();
     this.clearPiece();
     this.currentPiece.storeState();
 
@@ -139,26 +145,18 @@ export class GameplayService {
 
   private updateSubject() {
     let countLock = this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0;
-    const emptyRow = Array.apply(null, Array(this.gridSize.width))
-      .map(() => new Tile());
-
-    const topPortion = this.grid.slice((this.gridSize.height - countLock) * this.gridSize.width, this.gridSize.height * this.gridSize.width);
-    let g = Object.assign(new Array<Tile>(), this.grid);
-    g.splice((this.gridSize.height - countLock) * this.gridSize.width, countLock * this.gridSize.width);
-    for (let i = 0; i < countLock; i++) {
-      for (let j = 0; j < this.gridSize.width; j++) {
-        g.push({solid: true, color: "black"})
-      }
+    const topPortion = this.grid.slice(countLock * this.gridSize.width, this.gridSize.height * this.gridSize.width);
+    let g = new Array<Tile>();
+    g.push(...topPortion);
+    for (let i = 0; i < countLock * this.gridSize.width; i++) {
+      g.push({solid: true, color: "grey"})
     }
     this.gridSubject.next(g);
   }
 
-/*  private updateLockLines() {
-    let countLock = this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0;
-    for (let i = 0; i < countLock; i++) {
-      this.grid.
-    }
-  }*/
+  freeze() {
+    clearInterval(this.interval);
+  }
 
   private isGameOver() {
     this.currentPiece.storeState();
@@ -200,26 +198,48 @@ export class GameplayService {
 
   clearPiece(): void {
     this.currentPiece?.positionsOnGrid.forEach((pos) => {
-      this.grid[pos].color = "transparent";
+      this.grid[pos] = {color: "transparent", solid: this.grid[pos].solid};
     });
   }
 
   private spawnNewPiece(): void {
-    this.currentPiece = new Line(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize);
+    switch (this.gameService.loadNextPiece(this.game.id)) {
+      case 0:
+        this.currentPiece = new Line(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 1:
+        this.currentPiece = new Dot(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 2:
+        this.currentPiece = new T(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 3:
+        this.currentPiece = new L(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 4:
+        this.currentPiece = new Lr(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 5:
+        this.currentPiece = new Z(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+      case 6:
+        this.currentPiece = new S(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
+        break;
+    }
   }
 
   private drawPiece(): void {
     this.currentPiece.clearState();
     this.currentPiece.positionsOnGrid
       .forEach((pos) => {
-        this.grid[pos].color = this.currentPiece.color;
+        this.grid[pos] = {color: this.currentPiece.color, solid: this.grid[pos].solid};
       });
     this.updateSubject();
   }
 
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
-      this.grid[pos].solid = true;
+      this.grid[pos] = {color: this.grid[pos].color, solid: true};
       //    this.gameService.updateSpectrum(this.game, this.generateSpectrum())
     });
   }

@@ -28,7 +28,7 @@ export class Piece {
   protected gridSize;
 
   protected previousState: { x: number, y: number, rotation: PieceRotation, map: PieceMap } | null = null;
-  color = "blue";
+  color: string;
 
   constructor(x: number, y: number, gridSize: GridSize, maps: PieceMaps, color: string) {
     this.x = x;

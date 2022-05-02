@@ -19,6 +19,6 @@ MAPS[PieceRotation.DEG_90] = [
 export class Line extends Piece {
 
   constructor(x: number, y: number, gridSize: GridSize) {
-    super(x, y, gridSize, MAPS, "red");
+    super(x, y, gridSize, MAPS, "aqua");
   }
 }
