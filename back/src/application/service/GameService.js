@@ -13,14 +13,17 @@ class GameService {
         return newGame;
     }
 
-    rebootGame(game){
+    rebootGame(game, idPlayerloose){
         game.gameState = "CREATE",
         game.seed = ""
+        let Player = game.players.filter(player => player.id !== idPlayerloose)
+        game.players = Player
         game.players.map( player => {
-            player.lockline = 0
-            player.spectrum = [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            player.hasLoose = false
+             player.lockline = 0
+             player.spectrum = [0 , 0, 0, 0, 0, 0, 0, 0, 0, 0]
+             player.hasLoose = false
         })
+        console.log(game)
         return game
     }
 
