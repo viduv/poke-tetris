@@ -6,19 +6,12 @@ import {Piece} from "../model/pieces/piece";
   templateUrl: './piece-presentation.component.html',
   styleUrls: ['./piece-presentation.component.scss']
 })
-export class PiecePresentationComponent implements OnInit {
+export class PiecePresentationComponent {
 
   @Input() piece: Piece;
 
-  constructor() { }
-
-  ngOnInit(): void {
-    console.log(this.piece.positionsOnGrid)
-  }
-
   getTileColor(tilePosition: number) {
-
-    return this.piece.positionsOnGrid.find(position => position === tilePosition) !== undefined ? this.piece.color : "transparent";
+    return this.piece?.positionsOnGrid.find(position => position === tilePosition) !== undefined ? this.piece.color : "transparent";
   }
 
 

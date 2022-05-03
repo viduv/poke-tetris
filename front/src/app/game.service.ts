@@ -15,6 +15,8 @@ import {L} from "./model/pieces/l";
 import {Lr} from "./model/pieces/lr";
 import {Z} from "./model/pieces/z";
 import {S} from "./model/pieces/s";
+import {MatDialog} from "@angular/material/dialog";
+import {WinDialogComponent} from "./game/win-dialog/win-dialog.component";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +26,7 @@ export class GameService {
   nextPieceNumber: number;
   public nextPiece$ = new ReplaySubject<number>(1);
 
-  constructor(protected gameStore: Store<GameState>, private socket: Socket) {
+  constructor(protected gameStore: Store<GameState>, private socket: Socket, public dialog: MatDialog) {
   }
 
   public initGameSocket(gameId: string): void {
@@ -35,6 +37,7 @@ export class GameService {
       this.nextPieceNumber = nextPieceNumber;
       this.nextPiece$.next(this.nextPieceNumber);
     });
+    this.socket.fromEvent<any>("winner").subscribe(() => this.dialog.open(WinDialogComponent, {width: '60%'}));
   }
 
   public leaveGame(game: Game, playerId: string): void {

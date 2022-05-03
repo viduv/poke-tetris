@@ -11,7 +11,7 @@ import {PreGameService} from "../pre-game.service";
 })
 export class MainMenuComponent implements OnInit {
 
-  constructor(public dialog: MatDialog, private preGameService: PreGameService) { }
+  constructor(public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }

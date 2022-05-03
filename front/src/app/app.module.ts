@@ -30,6 +30,7 @@ import { SpectrumBoardComponent } from './game/game-field/spectrum-board/spectru
 import { SpectrumColumnComponent } from './game/game-field/spectrum-board/spectrum-column/spectrum-column.component';
 import { RemoveLockLinesPipe } from './game/game-field/board/remove-lock-lines.pipe';
 import { PiecePresentationComponent } from './piece-presentation/piece-presentation.component';
+import { WinDialogComponent } from './game/win-dialog/win-dialog.component';
 
 const config: SocketIoConfig = { url: 'http://10.12.6.1:4444', options: {} };
 
@@ -47,6 +48,7 @@ const config: SocketIoConfig = { url: 'http://10.12.6.1:4444', options: {} };
     SpectrumColumnComponent,
     RemoveLockLinesPipe,
     PiecePresentationComponent,
+    WinDialogComponent,
   ],
   imports: [
     BrowserModule,
