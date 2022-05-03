@@ -5,6 +5,16 @@ import {Socket} from "ngx-socket-io";
 import {Game} from "./stores/game-store/game";
 import {populateGame} from "./stores/game-store/game.actions";
 import {Player} from "./model/player";
+import {ReplaySubject} from "rxjs";
+import {GridSize} from "./model/pieces/Definitions";
+import {Piece} from "./model/pieces/piece";
+import {Line} from "./model/pieces/line";
+import {Dot} from "./model/pieces/Dot";
+import {T} from "./model/pieces/t";
+import {L} from "./model/pieces/l";
+import {Lr} from "./model/pieces/lr";
+import {Z} from "./model/pieces/z";
+import {S} from "./model/pieces/s";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +22,7 @@ import {Player} from "./model/player";
 export class GameService {
 
   nextPieceNumber: number;
+  public nextPiece$ = new ReplaySubject<number>(1);
 
   constructor(protected gameStore: Store<GameState>, private socket: Socket) {
   }
@@ -22,6 +33,7 @@ export class GameService {
     this.socket.emit("game", {id: gameId});
     this.socket.fromEvent<number>("nextPiece").subscribe((nextPieceNumber: number) => {
       this.nextPieceNumber = nextPieceNumber;
+      this.nextPiece$.next(this.nextPieceNumber);
     });
   }
 
@@ -52,5 +64,26 @@ export class GameService {
 
   lose(gameId: string) {
     this.socket.emit("lose", {gameId: gameId})
+  }
+
+  pieceNumberToPiece(pieceNumber: number, x: number, y: number, gridSize: GridSize): Piece {
+    switch (pieceNumber) {
+      case 0:
+        return new Line(x, y, gridSize);
+      case 1:
+        return new Dot(x, y, gridSize);
+      case 2:
+        return new T(x, y, gridSize);
+      case 3:
+        return new L(x, y, gridSize);
+      case 4:
+        return new Lr(x, y, gridSize);
+      case 5:
+        return new Z(x, y, gridSize);
+      case 6:
+        return new S(x, y, gridSize);
+      default:
+        return undefined as any;
+    }
   }
 }

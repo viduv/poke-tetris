@@ -86,12 +86,7 @@ class GameService {
     }
 
     getGame(id) {
-        if (this.games.find(item => item.id === id) !== undefined) {
-            return this.games.find(item => item.id === id);
-        } else {
-            //  console.log("ERROR ON gameId")
-            return "this game does not exit or your url is not correctly formated"
-        }
+        return this.games.find(item => item.id === id);
     }
 
     getGames() {

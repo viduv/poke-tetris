@@ -29,8 +29,9 @@ import { TileComponent } from './game/game-field/tile/tile.component';
 import { SpectrumBoardComponent } from './game/game-field/spectrum-board/spectrum-board.component';
 import { SpectrumColumnComponent } from './game/game-field/spectrum-board/spectrum-column/spectrum-column.component';
 import { RemoveLockLinesPipe } from './game/game-field/board/remove-lock-lines.pipe';
+import { PiecePresentationComponent } from './piece-presentation/piece-presentation.component';
 
-const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
+const config: SocketIoConfig = { url: 'http://10.12.6.1:4444', options: {} };
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
     SpectrumBoardComponent,
     SpectrumColumnComponent,
     RemoveLockLinesPipe,
+    PiecePresentationComponent,
   ],
   imports: [
     BrowserModule,

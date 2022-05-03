@@ -19,7 +19,7 @@ class LoseIn {
                     this.winnerOut.sendWinner(socket, " Vous avez gagné la partie", response.playerwin)
                 }
                 this.gameOut.refreshGame(newGame)
-                newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(6)));
+                newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(7)));
             }
         });
     }

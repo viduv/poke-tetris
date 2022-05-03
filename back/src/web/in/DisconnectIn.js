@@ -32,7 +32,7 @@ class DisconnectIn {
                         this.winnerOut.sendWinner(socket, " Vous avez gagné la partie par forfait", resp.playerwin)
                         console.log(newGame)
                         this.gameOut.refreshGame(newGame);
-                        newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(6)));
+                        newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(7)));
                     } else {
                         game.players = game.players.filter(player => player.id !== socket.id);
                         this.gameService.saveGame(game);

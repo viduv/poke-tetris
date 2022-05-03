@@ -27,7 +27,7 @@ class JoinGameIn {
                     this.gameService.saveGame(game);
                     this.SelfOut.sendSelf(socket, player);
                     this.gameOut.sendGameId(socket, game);
-                    this.nextPieceOut.sendNextPiece(socket.id, player.seed(6));
+                    this.nextPieceOut.sendNextPiece(socket.id, player.seed(7));
                 }
             }
         });

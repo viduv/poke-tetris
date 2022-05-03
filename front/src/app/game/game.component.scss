@@ -13,6 +13,7 @@
     flex-direction: column;
     align-items: center;
     padding-bottom: 32px;
+
     h1, h2 {
       display: flex;
       flex-direction: row;
@@ -23,6 +24,10 @@
     app-game-field {
       height: 70%;
       width: 65%;
+    }
+
+    .options :first-child {
+      margin-right: 8px;
     }
   }
 

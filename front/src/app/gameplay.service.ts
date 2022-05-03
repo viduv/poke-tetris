@@ -210,29 +210,12 @@ export class GameplayService {
   }
 
   private spawnNewPiece(): void {
-    switch (this.gameService.loadNextPiece(this.game.id)) {
-      case 0:
-        this.currentPiece = new Line(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 1:
-        this.currentPiece = new Dot(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 2:
-        this.currentPiece = new T(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 3:
-        this.currentPiece = new L(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 4:
-        this.currentPiece = new Lr(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 5:
-        this.currentPiece = new Z(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-      case 6:
-        this.currentPiece = new S(4, -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0), this.gridSize)
-        break;
-    }
+    this.currentPiece = this.gameService.pieceNumberToPiece(
+      this.gameService.loadNextPiece(this.game.id),
+      4,
+      -4 + (this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0),
+      this.gridSize
+    );
   }
 
   private drawPiece(): void {
@@ -281,12 +264,12 @@ export class GameplayService {
       });
   }
 
-  private generateSpectrum(grid : Array<Tile> ): Array<number> {
+  private generateSpectrum(grid: Array<Tile>): Array<number> {
 
-    let spectrum : Array<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    let spectrum: Array<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    for(let i = 0; i < grid.length; i++){
-      if(grid[i].solid && spectrum[i % this.gridSize.width] === 0){
+    for (let i = 0; i < grid.length; i++) {
+      if (grid[i].solid && spectrum[i % this.gridSize.width] === 0) {
         spectrum[i % this.gridSize.width] = this.gridSize.height - Math.trunc(i / this.gridSize.width)
       }
     }

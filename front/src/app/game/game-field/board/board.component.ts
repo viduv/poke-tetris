@@ -5,6 +5,9 @@ import {Store} from "@ngrx/store";
 import {GameState} from "../../../stores/game-store/game.state";
 import {selectGame, selectSelf} from "../../../stores/game-store/game.selector";
 import {Game} from "../../../stores/game-store/game";
+import {Piece} from "../../../model/pieces/piece";
+import {Dot} from "../../../model/pieces/Dot";
+import {GameService} from "../../../game.service";
 
 @Component({
   selector: 'app-board',
@@ -17,12 +20,13 @@ export class BoardComponent {
   currentUserId: string;
   game: Game;
 
-  constructor(public gameplayService: GameplayService, private gameStore: Store<GameState>) {
+  nextPiece: Piece;
+
+  constructor(public gameplayService: GameplayService, private gameStore: Store<GameState>, public gameService: GameService) {
     this.gameStore.select(selectGame).subscribe(game => this.game = game);
     this.gameStore.select(selectSelf).subscribe(self => this.currentUserId = self.id);
-  }
-
-  getLockLine() {
-    return this.game.players.find(p => p.id === this.currentUserId)?.lockline ?? 0;
+    this.gameService.nextPiece$.subscribe(nextPiece => {
+      this.nextPiece = this.gameService.pieceNumberToPiece(nextPiece, 0, -2, {height: 2, width: 4});
+    })
   }
 }

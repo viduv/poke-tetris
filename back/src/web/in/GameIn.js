@@ -10,14 +10,15 @@ class GameIn {
     initConnection(socket) {
         socket.on("game", (data) => {
             let game = this.gameService.getGame(data.id);
-            // Error Handling
-            if(game instanceof String || typeof game === 'string'){
-            }
-            // Normal process
-            else
-            {
-                game.connect(socket);
-                this.gameOut.refreshGame(game);
+            if (game) {
+                // Error Handling
+                if (game instanceof String || typeof game === 'string') {
+                }
+                // Normal process
+                else {
+                    game.connect(socket);
+                    this.gameOut.refreshGame(game);
+                }
             }
         });
     }

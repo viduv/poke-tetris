@@ -18,7 +18,7 @@ class CreateGameIn {
             this.SelfOut.sendSelf(socket, game.players[0]);
             // Send game id
             this.gameOut.sendGameId(socket, game);
-            this.nextPieceOut.sendNextPiece(game.players[0].id, game.players[0].seed(6));
+            this.nextPieceOut.sendNextPiece(game.players[0].id, game.players[0].seed(7));
         });
     }
 }

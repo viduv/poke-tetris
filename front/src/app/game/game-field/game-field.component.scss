@@ -1,19 +1,15 @@
 .field {
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: calc(100% - 16px);
   border: solid 1px white;
-
-  .tetromino {
-    width: 40%;
-    height: 20%;
-  }
+  margin-bottom: 16px;
 }
 
 h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   .kick-icon {
     cursor: pointer;
   }

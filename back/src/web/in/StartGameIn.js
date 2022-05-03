@@ -9,9 +9,11 @@ class StartGameIn {
     initConnection(socket) {
         socket.on("startGame", (data) => {
             let game = this.gameService.getGame(data.gameId);
-            game.startGame();
-            this.gameOut.refreshGame(game);
-            game.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(6)));
+            if (game) {
+                game.startGame();
+                this.gameOut.refreshGame(game);
+                game.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(7)));
+            }
         });
     }
 }

@@ -11,7 +11,7 @@ class NextPieceIn {
     initConnection(socket) {
         socket.on("nextPiece", (data) => {
             let game = this.gameService.getGame(data.gameId);
-            this.nextPieceOut.sendNextPiece(socket.id, game.players.find(player => player.id === socket.id).seed(6));
+            this.nextPieceOut.sendNextPiece(socket.id, game.players.find(player => player.id === socket.id).seed(7));
         })
     }
 }
