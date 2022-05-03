@@ -5,11 +5,9 @@ class WinnerOut {
 	    this.io = io;
 	}
     
-	sendWinner(socket , message, player) {
-	    this.io.to(socket.id).emit("winner", {
-		id: player.id,
-		message: message
-	    });
+	sendWinner(player) {
+		console.log("EMIT WIN")
+	    this.io.to(player.id).emit("winner", {});
 	}
     }
 	module.exports.WinnerOut = WinnerOut;

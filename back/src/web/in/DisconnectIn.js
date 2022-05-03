@@ -29,7 +29,7 @@ class DisconnectIn {
                     // If we have Winner and the game is on PLAY mode
                     if (resp.hasWinner && game.gameState === "PLAY") {
                         let newGame = this.gameService.rebootGame(game, socket.id)
-                        this.winnerOut.sendWinner(socket, " Vous avez gagné la partie par forfait", resp.playerwin)
+                        this.winnerOut.sendWinner(resp.playerwin)
                         console.log(newGame)
                         this.gameOut.refreshGame(newGame);
                         newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(7)));
