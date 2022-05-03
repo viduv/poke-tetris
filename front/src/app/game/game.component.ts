@@ -79,12 +79,18 @@ export class GameComponent implements OnInit {
       }
       if (this.game.gameState === "PLAY")
         this.gameplayService.start();
+      else if (this.game.gameState === "CREATE")
+        this.gameplayService.stop();
       console.log("recieve game", this.game);
     })
   }
 
   private getGame(): Observable<Game> {
     return this.gameStore.select(selectGame);
+  }
+
+  isOwner(): boolean {
+    return this.game.players.find(player => player.id === this.self.id)?.isOwner ?? false;
   }
 
   getOtherPlayers(internId: number): Player {

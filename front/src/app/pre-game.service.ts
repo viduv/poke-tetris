@@ -57,11 +57,11 @@ export class PreGameService {
     });
     this.selfSub = this.self.subscribe(self => {
         // populate self
-        this.gameStore.dispatch(populateSelf({self: self}))
+        this.gameStore.dispatch(populateSelf({self: self}));
         // flush Pre Game State
-        this.preGameStore.dispatch(flushState())
+        this.preGameStore.dispatch(flushState());
         // Unsubscribe
-        this.flushCreateGameSocket()
+        this.flushCreateGameSocket();
         // Go to Game
       }
     )

@@ -4,5 +4,5 @@
   <app-spectrum-board *ngIf="otherPlayer" [spectrum]="player?.spectrum"></app-spectrum-board>
 </div>
 <h2 class="player-name" *ngIf="otherPlayer && player">{{player?.name}}
-  <mat-icon class="kick-icon" *ngIf="otherPlayer" (click)="kickPlayer.emit()">close</mat-icon>
+  <mat-icon class="kick-icon" *ngIf="otherPlayer && canKick" (click)="kickPlayer.emit()">close</mat-icon>
 </h2>

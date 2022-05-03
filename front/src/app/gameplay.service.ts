@@ -39,7 +39,6 @@ export class GameplayService {
   isRun = false;
   isLose = false;
   gridSubject = new ReplaySubject<Tile[]>(1);
-  readonly gridObservable = this.gridSubject.asObservable();
 
   constructor(private gameService: GameService, private gameStore: Store<GameState>) {
     this.gameStore.select(selectGame).subscribe(game => this.game = game);
@@ -51,6 +50,7 @@ export class GameplayService {
     this.gridSize.height = height;
     this.gameSpeed = gameSpeed;
     this.isLose = false;
+    this.locked = false;
 
     const cellsCount = this.gridSize.width * this.gridSize.height;
     this.grid = Array.apply(null, Array(cellsCount))
@@ -59,11 +59,19 @@ export class GameplayService {
 
   start(): void {
     if (!this.isRun) {
+      console.log("start")
       this.initialize(10, 20, 300);
       this.spawnNewPiece();
       this.drawPiece();
       this.interval = setInterval(() => this.update(), this.gameSpeed);
       this.isRun = true;
+    }
+  }
+
+  stop(): void {
+    if (this.isRun) {
+      clearInterval(this.interval);
+      this.isRun = false;
     }
   }
 
@@ -120,10 +128,8 @@ export class GameplayService {
     }
     this.locked = true;
 
-    //  this.updateLockLines();
     this.clearPiece();
     this.currentPiece.storeState();
-
     this.currentPiece.moveDown();
     if (this.collidesBottom()) {
       this.currentPiece.revert();
@@ -135,6 +141,7 @@ export class GameplayService {
       this.spawnNewPiece();
       if (this.isGameOver()) {
         this.isLose = true;
+        this.gameService.lose(this.game.id);
         return;
       }
     }
@@ -273,5 +280,4 @@ export class GameplayService {
         return pos > 0 && this.grid[pos] && this.grid[pos].solid;
       });
   }
-
 }

@@ -48,6 +48,9 @@ export class GameService {
   loadNextPiece(gameId: string): number {
     this.socket.emit("nextPiece", {gameId: gameId});
     return this.nextPieceNumber;
-  //  return Math.trunc(Math.random() * 7)
+  }
+
+  lose(gameId: string) {
+    this.socket.emit("lose", {gameId: gameId})
   }
 }
