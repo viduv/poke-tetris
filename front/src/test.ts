@@ -29,6 +29,7 @@ getTestBed().initTestEnvironment(
   platformBrowserDynamicTesting(),
 );
 
+
 beforeEach(async () => {
   await TestBed.configureTestingModule({
     imports: [
@@ -44,7 +45,7 @@ beforeEach(async () => {
     providers: [
       {
         provide: MatDialogRef,
-        useValue: {}
+        useValue: {close : (dialogResult : any ) => {}}
       }
     ]
   }).compileComponents();
