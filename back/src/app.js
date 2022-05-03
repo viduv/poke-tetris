@@ -19,7 +19,7 @@ const {LoseIn} = require('./web/in/LoseIn');
 const {NextPieceIn} = require('./web/in/NextPieceIn');
 const {NextPieceOut} = require('./web/out/NextPieceOut');
 const {WinnerOut} = require('./web/out/WinnerOut');
-// var rand = require('random-seed').create(445);
+const {RedirectionOut} = require('./web/out/RedirectionOut');
 
 class Application {
 
@@ -37,12 +37,6 @@ class Application {
     }
 
     run() {
-        // var n = rand(8);
-        // var x = rand(8);
-        // var seed = new Date().getTime()
-        // console.log(time)
-        // console.log(n)
-        // console.log(x)
         // Set Object instances
         const nextPieceOut = new NextPieceOut(this.io);
         const gameService = new GameService();
@@ -62,6 +56,7 @@ class Application {
         const loseIn = new LoseIn(gameService, gameOut, winnerOut, nextPieceOut);
         const startGameIn = new StartGameIn(gameService, gameOut, nextPieceOut);
         const nextPieceIn = new NextPieceIn(nextPieceOut, gameService);
+        const redirectionOut = new RedirectionOut(this.io)
 
         this.io.on("connection", socket => {
             gameListIn.initConnection(socket);
@@ -76,6 +71,9 @@ class Application {
             spectrumIn.initConnection(socket);
             loseIn.initConnection(socket);
             nextPieceIn.initConnection(socket);
+
+            // Launch Redirection to the home page
+            redirectionOut.sendRedirectToHome(socket)
 
             console.log(`Socket ${socket.id} has connected`);
         });
