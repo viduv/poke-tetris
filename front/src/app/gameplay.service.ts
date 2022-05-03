@@ -35,7 +35,7 @@ export class GameplayService {
   private currentPiece: Piece;
   public grid: Array<Tile>;
   private locked = false;
-  private interval: number | undefined;
+  private interval: any | undefined;
   isRun = false;
   isLose = false;
   gridSubject = new ReplaySubject<Tile[]>(1);
@@ -247,7 +247,7 @@ export class GameplayService {
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
       this.grid[pos] = {color: this.grid[pos].color, solid: true};
-      //    this.gameService.updateSpectrum(this.game, this.generateSpectrum())
+      this.gameService.updateSpectrum(this.game, this.generateSpectrum(this.grid))
     });
   }
 
@@ -279,5 +279,17 @@ export class GameplayService {
       .some((pos) => {
         return pos > 0 && this.grid[pos] && this.grid[pos].solid;
       });
+  }
+
+  private generateSpectrum(grid : Array<Tile> ): Array<number> {
+
+    let spectrum : Array<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+    for(let i = 0; i < grid.length; i++){
+      if(grid[i].solid && spectrum[i % this.gridSize.width] === 0){
+        spectrum[i % this.gridSize.width] = this.gridSize.height - Math.trunc(i / this.gridSize.width)
+      }
+    }
+    return spectrum
   }
 }

@@ -5,8 +5,8 @@ const MAPS: PieceMaps = [];
 MAPS[PieceRotation.DEG_0] = [
   [undefined, undefined, undefined, undefined],
   [undefined, undefined, undefined, undefined],
-  [undefined, undefined, undefined, PieceTypes.Lr],
-  [undefined, PieceTypes.Lr, PieceTypes.Lr, PieceTypes.Lr],
+  [undefined, undefined, PieceTypes.Lr, undefined],
+  [PieceTypes.Lr, PieceTypes.Lr, PieceTypes.Lr, undefined],
 ];
 
 MAPS[PieceRotation.DEG_90] = [
@@ -19,8 +19,8 @@ MAPS[PieceRotation.DEG_90] = [
 MAPS[PieceRotation.DEG_180] = [
   [undefined, undefined, undefined, undefined],
   [undefined, undefined, undefined, undefined],
-  [undefined, PieceTypes.Lr, PieceTypes.Lr, PieceTypes.Lr],
-  [undefined, PieceTypes.Lr, undefined, undefined],
+  [PieceTypes.Lr, PieceTypes.Lr, PieceTypes.Lr, undefined],
+  [PieceTypes.Lr, undefined, undefined, undefined],
 ];
 
 MAPS[PieceRotation.DEG_270] = [

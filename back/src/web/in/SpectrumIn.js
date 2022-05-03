@@ -5,14 +5,13 @@ class SpectrumIn {
 	}
     
 	initConnection(socket) {
-	    socket.on("spectrum", (data) => {
-			console.log(data.spectrum)
-		let game = this.gameService.getGame(data.gameId);
-		game = this.gameService.refreshSpectrum(socket.id, data.spectrum, game)
-		this.gameOut.refreshGame(game);
+		socket.on("spectrum", (data) => {
+			let game = this.gameService.getGame(data.gameId);
+			game = this.gameService.refreshSpectrum(socket.id, data.spectrum, game)
+			this.gameOut.refreshGame(game);
 	    });
 	}
-    }
-    
-    module.exports.SpectrumIn = SpectrumIn;
+}
+
+module.exports.SpectrumIn = SpectrumIn;
     
