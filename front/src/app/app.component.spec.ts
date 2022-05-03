@@ -20,10 +20,10 @@ class MockChatService extends ChatService {
     super(socket, store);
   }
 
-  override initSocket() {
-    this.store.dispatch(recieveMessage({message: "test1"}));
-    this.store.dispatch(recieveMessage({message: "test2"}));
-  }
+  // override initSocket() {
+  //   this.store.dispatch(recieveMessage({message: "test1"}));
+  //   this.store.dispatch(recieveMessage({message: "test2"}));
+  // }
 
   override getMessages(): Observable<string[]> {
     return this.store.select((selectChatMessages));
@@ -66,15 +66,15 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('red-tetris');
   });
 
-  it("getMessages should return ['test1', 'test2']", (done) => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
+  // it("getMessages should return ['test1', 'test2']", (done) => {
+  //   const fixture = TestBed.createComponent(AppComponent);
+  //   const app = fixture.componentInstance;
 
-    setTimeout(()=> {
-    app.getMessages().subscribe(messages => {
-        expect(messages).toEqual(["test1", "test2"]);
-        done();
-    });
-    }, 1000);
-  });
+  //   setTimeout(()=> {
+  //   app.getMessages().subscribe(messages => {
+  //       expect(messages).toEqual(["test1", "test2"]);
+  //       done();
+  //   });
+  //   }, 1000);
+  // });
 });

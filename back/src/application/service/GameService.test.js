@@ -13,7 +13,7 @@ test('get Game by id', () => {
 	gameServ.addGame("antoineGame", "antoine", true, { id: "555", name: "socket"})
 	game = gameServ.addGame("etienneGame", "etienne", true, { id: "555", name: "socket"})
 	expect(gameServ.games.length).toBe(2);
-	expect(gameServ.getGame("idthatnotexist")).toStrictEqual("this game does not exit or your url is not correctly formated")
+	expect(gameServ.getGame("idthatnotexist")).toStrictEqual(undefined)
 	game1 = gameServ.getGame(game.id)
 	expect(game1.id).toBe(game.id);
 })

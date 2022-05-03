@@ -1,7 +1,9 @@
 import { S } from './s';
+import {GridSize} from './Definitions';
 
 describe('S', () => {
   it('should create an instance', () => {
-    expect(new S()).toBeTruthy();
+    let  x = {} as GridSize
+    expect(new S(5, 6 , x)).toBeTruthy();
   });
 });
