@@ -1,18 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Piece} from "./model/pieces/piece";
-import {Line} from "./model/pieces/line";
 import {ReplaySubject} from "rxjs";
 import {GameService} from "./game.service";
 import {Game} from "./stores/game-store/game";
 import {GameState} from "./stores/game-store/game.state";
 import {Store} from "@ngrx/store";
 import {selectGame, selectSelf} from "./stores/game-store/game.selector";
-import {Dot} from "./model/pieces/Dot";
-import {T} from "./model/pieces/t";
-import {L} from "./model/pieces/l";
-import {Lr} from "./model/pieces/lr";
-import {Z} from "./model/pieces/z";
-import {S} from "./model/pieces/s";
 
 export class Tile {
   solid = false;
@@ -274,5 +267,10 @@ export class GameplayService {
       }
     }
     return spectrum
+  }
+
+  clearGame() {
+    this.grid = [];
+    this.gridSubject.next([]);
   }
 }

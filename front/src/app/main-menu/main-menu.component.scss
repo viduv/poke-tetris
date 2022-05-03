@@ -1,10 +1,11 @@
 .test {
-  height: 70%;
+  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
+  padding-top: 64px;
+  
   h1 {
     display: flex;
     flex-direction: row;
@@ -14,11 +15,17 @@
   .menu {
     display: flex;
     flex-direction: column;
+    margin-bottom: 64px;
 
     button {
       width: 500px;
       height: 56px;
       margin-bottom: 24px;
     }
+
+  }
+
+  app-piece-presentation {
+    width: 350px;
   }
 }

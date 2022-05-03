@@ -1,6 +1,6 @@
 :host {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(var(--column), 1fr);
   width: 20%;
   height: 20%;
   padding: 2px;

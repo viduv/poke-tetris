@@ -1,5 +1,9 @@
-mat-dialog-content {
+mat-dialog-content form {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  mat-button-toggle-group {
+    width: fit-content;
+  }
 }

@@ -5,5 +5,5 @@
 
 <app-tile [color]="this.getTileColor(4)"></app-tile>
 <app-tile [color]="this.getTileColor(5)"></app-tile>
-<app-tile [color]="this.getTileColor(6)"></app-tile>
-<app-tile [color]="this.getTileColor(7)"></app-tile>
+<app-tile [color]="this.getTileColor(6)" *ngIf="mode === 'game'"></app-tile>
+<app-tile [color]="this.getTileColor(7)" *ngIf="mode === 'game'"></app-tile>

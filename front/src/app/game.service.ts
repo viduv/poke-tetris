@@ -17,6 +17,8 @@ import {Z} from "./model/pieces/z";
 import {S} from "./model/pieces/s";
 import {MatDialog} from "@angular/material/dialog";
 import {WinDialogComponent} from "./game/win-dialog/win-dialog.component";
+import {Router} from "@angular/router";
+import {RedirectionDialogComponent} from "./game/redirection-dialog/redirection-dialog.component";
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +28,7 @@ export class GameService {
   nextPieceNumber: number;
   public nextPiece$ = new ReplaySubject<number>(1);
 
-  constructor(protected gameStore: Store<GameState>, private socket: Socket, public dialog: MatDialog) {
+  constructor(protected gameStore: Store<GameState>, private socket: Socket, public dialog: MatDialog, private router: Router) {
   }
 
   public initGameSocket(gameId: string): void {
@@ -37,7 +39,14 @@ export class GameService {
       this.nextPieceNumber = nextPieceNumber;
       this.nextPiece$.next(this.nextPieceNumber);
     });
-    this.socket.fromEvent<any>("winner").subscribe(() => this.dialog.open(WinDialogComponent, {width: '60%'}));
+    this.socket.fromEvent<any>("winner").subscribe(() => {
+      console.log("win")
+      this.dialog.open(WinDialogComponent, {width: '60%'});
+    });
+    this.socket.fromEvent<any>("redirect").subscribe(() => {
+      this.router.navigate(['']);
+      this.dialog.open(RedirectionDialogComponent, {width: '60%'});
+    })
   }
 
   public leaveGame(game: Game, playerId: string): void {

@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {GameService} from "../game.service";
 import {Self} from "../stores/game-store/self";
@@ -18,7 +18,7 @@ import {GameplayService} from "../gameplay.service";
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 // You can access to this page using the UI, or passing parameters id/[username] on the url
   id: string;
   self: Self;
@@ -36,6 +36,10 @@ export class GameComponent implements OnInit {
               private gameplayService: GameplayService
   ) {
   }
+
+  ngOnDestroy(): void {
+        this.gameplayService.clearGame();
+    }
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.pipe(first()).subscribe(map => {
@@ -113,7 +117,7 @@ export class GameComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === "b")
+    if (event.key === "ArrowDown")
       this.gameplayService.update();
     if (event.key === "f")
       this.gameplayService.freeze();
