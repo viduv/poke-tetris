@@ -14,6 +14,7 @@ import { preGameReducer } from './app/stores/pre-game-store/pre-game.reducer';
 import { StoreModule } from '@ngrx/store';
 import { GameReducer } from './app/stores/game-store/game.reducer';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 
 declare const require: {
@@ -38,6 +39,7 @@ beforeEach(async () => {
       SocketIoModule.forRoot({ url: 'http://localhost:4444', options: {} }),
       MatDialogModule,
       MatSnackBarModule,
+      BrowserAnimationsModule,
     ],
     declarations: [
       AppComponent

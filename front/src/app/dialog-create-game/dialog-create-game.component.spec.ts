@@ -36,8 +36,8 @@ describe('DialogCreateGameComponent', () => {
 
   it("shoud call createGame Method", () => {
     // spy setup 
-    var spyPreGame = spyOn((<any>component).preGameService, "CreateGame").and.callThrough();
-    var spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
+    let spyPreGame = spyOn((<any>component).preGameService, "CreateGame").and.callThrough();
+    let spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
     // init variable
     component.createGameForm.controls["gameName"].setValue("Tetris")
     component.createGameForm.controls["playerName"].setValue("Nicolas")
@@ -50,7 +50,7 @@ describe('DialogCreateGameComponent', () => {
   })
 
   it("should call closeDialog", () => {
-    var spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
+    let spyDialogRef = spyOn((<any>component).dialogRef, "close").and.returnValue("coucou");
     component.closeDialog()
     expect(spyDialogRef)
     expect((<any>component).dialogRef.close).toHaveBeenCalled()

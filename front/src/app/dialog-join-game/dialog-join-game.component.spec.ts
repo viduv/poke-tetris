@@ -36,8 +36,8 @@ describe('DialogJoinGameComponent', () => {
 
   it("shoud go on first If statement in joinGame Method", () => {
     // spy setup 
-    var spyPreGame = spyOn((<any>component).preGameService, "JoinGame").and.callThrough();
-    var spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
+    let spyPreGame = spyOn((<any>component).preGameService, "JoinGame").and.callThrough();
+    let spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
     // init variable
     component.gamesForm.controls["playerName"].setValue("Nicolas")
     component.gamesForm.controls["gameSelect"].setValue("aSuperUuid1254forTesting")
@@ -50,7 +50,7 @@ describe('DialogJoinGameComponent', () => {
 
   it("shoud go on else else statement on joinGame Method and open snackbar error", () => {
     // spy setup 
-    var spySnackbar = spyOn((<any>component).snackBar, "open").and.callThrough();
+    let spySnackbar = spyOn((<any>component).snackBar, "open").and.callThrough();
     // init variable
     component.gamesForm.controls["playerName"].setValue("Nicolas")
     component.gamesForm.controls["gameId"].setValue("aSuperUuid1254forTesting")
@@ -61,9 +61,9 @@ describe('DialogJoinGameComponent', () => {
 
 
   it("should call closeDialog", () => {
-    var spyStore = spyOn((<any>component).store, "dispatch").and.callThrough();
-    var spyPreGame = spyOn((<any>component).preGameService, "flushGamesListSocket").and.callThrough();
-    var spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
+    let spyStore = spyOn((<any>component).store, "dispatch").and.callThrough();
+    let spyPreGame = spyOn((<any>component).preGameService, "flushGamesListSocket").and.callThrough();
+    let spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
  
     component.closeDialog()
     expect(spyDialogRef)

@@ -1,5 +1,5 @@
 // Angular Import
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
 // Material Import
 import {MatDialogRef} from "@angular/material/dialog";
@@ -15,7 +15,7 @@ import {GameState} from '../stores/game-store/game.state';
   templateUrl: './dialog-create-game.component.html',
   styleUrls: ['./dialog-create-game.component.scss']
 })
-export class DialogCreateGameComponent implements OnInit {
+export class DialogCreateGameComponent {
 
   createGameForm: FormGroup = new FormGroup({
     gameName: new FormControl(""),
@@ -28,9 +28,6 @@ export class DialogCreateGameComponent implements OnInit {
     private preGameService: PreGameService,
     protected Store: Store<GameState>,
   ) {
-  }
-
-  ngOnInit(): void {
   }
 
   createGame(): void {

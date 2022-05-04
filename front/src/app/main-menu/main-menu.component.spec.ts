@@ -22,4 +22,21 @@ describe('MainMenuComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it("shoud call open Dialog Form Creation", () => {
+    // spy setup 
+    let spyDialog = spyOn((<any>component).dialog, "open").and.callThrough();
+    component.openDialogCreate()
+    expect(spyDialog);
+    expect((<any>component).dialog.open).toHaveBeenCalled();
+  })
+
+  it("shoud call open Dialog Form Join", () => {
+    // spy setup 
+    let spyDialog = spyOn((<any>component).dialog, "open").and.callFake(() => {});
+    component.openDialogJoin()
+    expect(spyDialog);
+    expect((<any>component).dialog.open).toHaveBeenCalled();
+  })
+
 });
