@@ -111,7 +111,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   startGame() {
     this.gameService.startGame(this.game);
-//    this.gameplayService.start();
   }
 
   @HostListener('window:keydown', ['$event'])
