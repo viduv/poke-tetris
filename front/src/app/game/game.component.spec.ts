@@ -29,6 +29,7 @@ describe('GameComponent', () => {
       id : "anIdFortest",
       name : "Game1",
       isPublic : true,
+      difficulty: "200",
       gameState : "PLAY",
       players : [
         {
@@ -58,6 +59,7 @@ describe('GameComponent', () => {
       id : "anIdFortest",
       name : "Game1",
       isPublic : true,
+      difficulty: "200",
       gameState : "PLAY",
       players : [
         {
@@ -102,7 +104,7 @@ describe('GameComponent', () => {
     expect((<any>component).router.navigate).toHaveBeenCalled();
     expect((<any>component).gameService.leaveGame).toHaveBeenCalled();
   }
-  
+
   it("Should call kickPlayer"), () => {
     let spyGameService = spyOn((<any>component).gameService, "kickPlayer").and.callThrough();
     component.kickPlayer({

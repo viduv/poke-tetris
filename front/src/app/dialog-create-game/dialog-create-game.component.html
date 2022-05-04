@@ -1,19 +1,26 @@
 <h1 mat-dialog-title>Creer une partie</h1>
 <mat-dialog-content>
   <form [formGroup]="createGameForm">
-  <mat-form-field class="example-full-width" appearance="outline">
+  <mat-form-field appearance="outline">
     <mat-label>Nom de la partie</mat-label>
     <input matInput formControlName="gameName">
   </mat-form-field>
-  <mat-form-field class="example-full-width" appearance="outline">
+  <mat-form-field appearance="outline">
     <mat-label>Votre pseudo</mat-label>
     <input matInput formControlName="playerName">
   </mat-form-field>
-  <mat-button-toggle-group aria-label="Font Style" formControlName="gameIsPublic">
-    <mat-button-toggle value="False">Privée</mat-button-toggle>
-    <mat-button-toggle value="True">Publique</mat-button-toggle>
-  </mat-button-toggle-group>
-</form>
+    <mat-button-toggle-group formControlName="gameIsPublic">
+      <mat-button-toggle value="False">Privée</mat-button-toggle>
+      <mat-button-toggle value="True">Publique</mat-button-toggle>
+    </mat-button-toggle-group>
+
+    <mat-button-toggle-group formControlName="difficulty">
+      <mat-button-toggle value="300">Facile</mat-button-toggle>
+      <mat-button-toggle value="200">Moyen</mat-button-toggle>
+      <mat-button-toggle value="100">Difficile</mat-button-toggle>
+    </mat-button-toggle-group>
+
+  </form>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button color="link" (click)="closeDialog()">Annuler</button>

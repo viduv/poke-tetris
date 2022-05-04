@@ -52,7 +52,7 @@ export class GameplayService {
 
   start(): void {
     if (!this.isRun) {
-      this.initialize(10, 20, 300);
+      this.initialize(10, 20, Number(this.game.difficulty));
       this.spawnNewPiece();
       this.drawPiece();
       this.startInterval();
@@ -227,7 +227,7 @@ export class GameplayService {
   private markSolid(): void {
     this.currentPiece.positionsOnGrid.forEach((pos) => {
       this.grid[pos] = {color: this.grid[pos].color, solid: true};
-      this.gameService.updateSpectrum(this.game, this.generateSpectrum(this.grid))
+      this.gameService.updateSpectrum(this.game, this.generateSpectrum())
     });
   }
 
@@ -261,12 +261,12 @@ export class GameplayService {
       });
   }
 
-  private generateSpectrum(grid: Array<Tile>): Array<number> {
+  private generateSpectrum(): Array<number> {
 
     let spectrum: Array<number> = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
-    for (let i = 0; i < grid.length; i++) {
-      if (grid[i].solid && spectrum[i % this.gridSize.width] === 0) {
+    for (let i = 0; i < this.grid.length; i++) {
+      if (this.grid[i].solid && spectrum[i % this.gridSize.width] === 0) {
         spectrum[i % this.gridSize.width] = this.gridSize.height - Math.trunc(i / this.gridSize.width)
       }
     }

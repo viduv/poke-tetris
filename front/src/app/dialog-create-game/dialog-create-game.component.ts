@@ -17,6 +17,7 @@ export class DialogCreateGameComponent {
     gameName: new FormControl(""),
     playerName: new FormControl(""),
     gameIsPublic: new FormControl(""),
+    difficulty: new FormControl("200"),
   })
 
   constructor(

@@ -8,6 +8,7 @@ export const initialState: GameState = {
     name: "",
     gameState: "",
     isPublic: true,
+    difficulty: "200",
     players: [],
   },
   self: {
