@@ -47,7 +47,7 @@ export class GameplayService {
 
     const cellsCount = this.gridSize.width * this.gridSize.height;
     this.grid = Array.apply(null, Array(cellsCount))
-      .map(() => new Tile());
+      .map(() => ({solid: false, color: "transparent"}));
   }
 
   start(): void {
@@ -55,20 +55,25 @@ export class GameplayService {
       this.initialize(10, 20, 300);
       this.spawnNewPiece();
       this.drawPiece();
-      this.interval = setInterval(() => this.update(), this.gameSpeed);
+      this.startInterval();
       this.isRun = true;
     }
+  }
+
+  startInterval(): void {
+    this.interval = setInterval(() => this.update(), this.gameSpeed);
   }
 
   stop(): void {
     if (this.isRun) {
       clearInterval(this.interval);
+      this.interval = undefined;
       this.isRun = false;
     }
   }
 
   public moveLeft() {
-    if (this.locked || this.isLose) {
+    if (this.locked || this.isLose || !this.isRun) {
       return;
     }
     this.clearPiece();
@@ -82,7 +87,7 @@ export class GameplayService {
   }
 
   public moveRight() {
-    if (this.locked || this.isLose) {
+    if (this.locked || this.isLose || !this.isRun) {
       return;
     }
     this.clearPiece();
@@ -96,7 +101,7 @@ export class GameplayService {
   }
 
   public rotate() {
-    if (this.locked || this.isLose) {
+    if (this.locked || this.isLose || !this.isRun) {
       return;
     }
 
@@ -115,7 +120,7 @@ export class GameplayService {
   }
 
   public update(): void {
-    if (this.locked || this.isLose) {
+    if (this.locked || this.isLose || !this.isRun) {
       return;
     }
     this.locked = true;
@@ -182,7 +187,7 @@ export class GameplayService {
 
       if (isFull) {
         const emptyRow = Array.apply(null, Array(this.gridSize.width))
-          .map(() => new Tile());
+          .map(() => ({solid: false, color: "transparent"}));
 
         const topPortion = this.grid.slice(0, row * this.gridSize.width);
 
@@ -197,7 +202,7 @@ export class GameplayService {
 
   clearPiece(): void {
     this.currentPiece?.positionsOnGrid.forEach((pos) => {
-      this.grid[pos] = {color: "transparent", solid: this.grid[pos].solid};
+      this.grid[pos] = {solid: this.grid[pos].solid, color: "transparent"};
     });
   }
 

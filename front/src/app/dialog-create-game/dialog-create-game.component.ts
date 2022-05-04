@@ -4,10 +4,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 // Material Import
 import {MatDialogRef} from "@angular/material/dialog";
 import {PreGameService} from '../pre-game.service';
-// Ngrx Import
-import {Store} from '@ngrx/store';
-// State Import
-import {GameState} from '../stores/game-store/game.state';
 
 
 @Component({
@@ -26,7 +22,6 @@ export class DialogCreateGameComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogCreateGameComponent>,
     private preGameService: PreGameService,
-    protected Store: Store<GameState>,
   ) {
   }
 

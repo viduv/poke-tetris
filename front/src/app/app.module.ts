@@ -28,7 +28,6 @@ import { BoardComponent } from './game/game-field/board/board.component';
 import { TileComponent } from './game/game-field/tile/tile.component';
 import { SpectrumBoardComponent } from './game/game-field/spectrum-board/spectrum-board.component';
 import { SpectrumColumnComponent } from './game/game-field/spectrum-board/spectrum-column/spectrum-column.component';
-import { RemoveLockLinesPipe } from './game/game-field/board/remove-lock-lines.pipe';
 import { PiecePresentationComponent } from './piece-presentation/piece-presentation.component';
 import { WinDialogComponent } from './game/win-dialog/win-dialog.component';
 import { RedirectionDialogComponent } from './game/redirection-dialog/redirection-dialog.component';
@@ -47,7 +46,6 @@ const config: SocketIoConfig = { url: 'http://0.0.0.0:4444', options: {} };
     TileComponent,
     SpectrumBoardComponent,
     SpectrumColumnComponent,
-    RemoveLockLinesPipe,
     PiecePresentationComponent,
     WinDialogComponent,
     RedirectionDialogComponent,

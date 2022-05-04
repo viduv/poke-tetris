@@ -24,9 +24,9 @@ describe('DialogCreateGameComponent', () => {
   });
 
   it("should be true when formcontrol is empty ", () => {
-    expect(component.isDisabled()).toBeTrue()
+    expect(component.isDisabled()).toBeTrue();
   })
-  
+
   it("should be false when formcontrol is correct", () => {
     component.createGameForm.controls["gameName"].setValue("Tetris")
     component.createGameForm.controls["playerName"].setValue("Nicolas")
@@ -35,7 +35,7 @@ describe('DialogCreateGameComponent', () => {
   })
 
   it("shoud call createGame Method", () => {
-    // spy setup 
+    // spy setup
     let spyPreGame = spyOn((<any>component).preGameService, "CreateGame").and.callThrough();
     let spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
     // init variable
