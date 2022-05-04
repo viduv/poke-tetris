@@ -8,7 +8,6 @@ import {PreGameService} from '../pre-game.service';
 import {Store} from '@ngrx/store';
 // State Import
 import {GameState} from '../stores/game-store/game.state';
-import {Router} from "@angular/router";
 
 
 @Component({

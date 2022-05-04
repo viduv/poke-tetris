@@ -9,7 +9,6 @@ class LeaveGameIn {
         socket.on("leaveGame", (data) => {
             let game = this.gameService.getGame(data.gameId);
             if(game) {
-                console.log(game)
                 game.disconnect(socket);
                 // Check If The player that leave the game is Owner and is not alone, if its the case give the owner to someone else
                 if (Object.keys(game.players).length > 1) {

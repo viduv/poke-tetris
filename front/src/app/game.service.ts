@@ -40,7 +40,6 @@ export class GameService {
       this.nextPiece$.next(this.nextPieceNumber);
     });
     this.socket.fromEvent<any>("winner").subscribe(() => {
-      console.log("win")
       this.dialog.open(WinDialogComponent, {width: '60%'});
     });
     this.socket.fromEvent<any>("redirect").subscribe(() => {

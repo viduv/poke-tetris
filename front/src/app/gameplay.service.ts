@@ -52,7 +52,6 @@ export class GameplayService {
 
   start(): void {
     if (!this.isRun) {
-      console.log("start")
       this.initialize(10, 20, 300);
       this.spawnNewPiece();
       this.drawPiece();

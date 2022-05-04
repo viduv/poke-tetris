@@ -85,7 +85,6 @@ export class GameComponent implements OnInit, OnDestroy {
         this.gameplayService.start();
       else if (this.game.gameState === "CREATE")
         this.gameplayService.stop();
-      console.log("recieve game", this.game);
     })
   }
 

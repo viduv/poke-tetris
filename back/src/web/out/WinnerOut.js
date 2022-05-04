@@ -6,7 +6,6 @@ class WinnerOut {
 	}
     
 	sendWinner(player) {
-		console.log("EMIT WIN")
 	    this.io.to(player.id).emit("winner", {});
 	}
     }

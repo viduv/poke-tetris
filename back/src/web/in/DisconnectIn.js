@@ -30,7 +30,6 @@ class DisconnectIn {
                     if (resp.hasWinner && game.gameState === "PLAY") {
                         let newGame = this.gameService.rebootGame(game, socket.id)
                         this.winnerOut.sendWinner(resp.playerwin)
-                        console.log(newGame)
                         this.gameOut.refreshGame(newGame);
                         newGame.players.forEach(player => this.nextPieceOut.sendNextPiece(player.id, player.seed(7)));
                     } else {

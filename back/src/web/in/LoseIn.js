@@ -8,7 +8,6 @@ class LoseIn {
 
     initConnection(socket) {
         socket.on("lose", (data) => {
-            console.log("LOOSSE")
             let game = this.gameService.getGame(data.gameId);
             let response = this.gameService.addPlayerLoose(game, socket.id)
             if (response.gameContinue) {
