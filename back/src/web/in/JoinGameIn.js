@@ -21,6 +21,7 @@ class JoinGameIn {
 
             // Create Player + return Self + Game Id
             else {
+                if(game){
                 let player = new Player(data.playerName, false, socket, game.seedTime);
                 if (game) {
                     game.players.push(player);
@@ -30,6 +31,7 @@ class JoinGameIn {
                     this.nextPieceOut.sendNextPiece(socket.id, player.seed(7));
                 }
             }
+        }
         });
     }
 }

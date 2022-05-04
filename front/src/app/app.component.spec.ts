@@ -1,34 +1,23 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+
 import { AppComponent } from './app.component';
-import {Store, StoreModule} from "@ngrx/store";
-import {chatReducer} from "./chat-store/chat.reducer";
-import {ChatService} from "./chat.service";
-import {Observable} from "rxjs";
-import {selectChatMessages} from "./chat-store/chat.selector";
-import {Socket, SocketIoModule} from "ngx-socket-io";
-import {ChatState} from "./chat-store/chat.state";
-import {recieveMessage} from "./chat-store/chat.actions";
-import {Injectable} from "@angular/core";
 
-@Injectable({
-  providedIn: 'root'
-})
-class MockChatService extends ChatService {
 
-  constructor(override socket: Socket, override store: Store<ChatState>) {
-    super(socket, store);
-  }
+// @Injectable({
+//   providedIn: 'root'
+// })
+// class MockChatService extends ChatService {
 
-  // override initSocket() {
-  //   this.store.dispatch(recieveMessage({message: "test1"}));
-  //   this.store.dispatch(recieveMessage({message: "test2"}));
-  // }
+//   // constructor(override socket: Socket, override store: Store<ChatState>) {
+//   //   super(socket, store);
+//   // }
 
-  override getMessages(): Observable<string[]> {
-    return this.store.select((selectChatMessages));
-  }
-}
+//   // override initSocket() {
+//   //   this.store.dispatch(recieveMessage({message: "test1"}));
+//   //   this.store.dispatch(recieveMessage({message: "test2"}));
+//   // }
+
+// }
 
 describe('AppComponent', () => {
 
@@ -37,19 +26,19 @@ describe('AppComponent', () => {
     done();
   });
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        StoreModule.forRoot({ chat: chatReducer }, {}),
-        SocketIoModule.forRoot({ url: 'http://localhost:4444', options: {} }),
-      ],
-      declarations: [
-        AppComponent
-      ],
-      providers: [{provide: ChatService, useClass: MockChatService}]
-    }).compileComponents();
-  });
+  // beforeEach(async () => {
+  //   await TestBed.configureTestingModule({
+  //     imports: [
+  //       RouterTestingModule,
+  //       StoreModule.forRoot({ chat: chatReducer }, {}),
+  //       SocketIoModule.forRoot({ url: 'http://localhost:4444', options: {} }),
+  //     ],
+  //     declarations: [
+  //       AppComponent
+  //     ],
+  //     providers: [{provide: ChatService, useClass: MockChatService}]
+  //   }).compileComponents();
+  // });
 
   afterAll(() => {
   });
