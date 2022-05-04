@@ -8,8 +8,8 @@ class GameService {
         this.games = [];
     }
 
-    addGame(name, playerName, isPublic, socket) {
-        let newGame = new Game(name, "CREATE", isPublic);
+    addGame(name, playerName, isPublic, difficulty, socket) {
+        let newGame = new Game(name, "CREATE", isPublic, difficulty);
         newGame.players.push(new Player(playerName, true, socket, newGame.seedTime));
         this.games.push(newGame);
         return newGame;
@@ -67,21 +67,25 @@ class GameService {
 
     // Add Line to spectrum
     addLockLine(addlockline, game, playerId) {
-        game.players.map(player => {
-            if (player.id !== playerId) {
-                player.lockline += addlockline
-                player.spectrum = player.spectrum.map(value => value + player.lockline)
-            }
-        })
+        if (game) {
+            game.players.map(player => {
+                if (player.id !== playerId) {
+                    player.lockline += addlockline
+                    player.spectrum = player.spectrum.map(value => value + player.lockline)
+                }
+            })
+        }
         return game;
     }
 
     refreshSpectrum(playerId, spectrum, game) {
-        game.players.map(player => {
-            if (player.id === playerId) {
-                player.spectrum = spectrum.map(value => value + player.lockline)
-            }
-        })
+        if (game) {
+            game.players.map(player => {
+                if (player.id === playerId) {
+                    player.spectrum = spectrum.map(value => value + player.lockline)
+                }
+            })
+        }
         return game;
     }
 
