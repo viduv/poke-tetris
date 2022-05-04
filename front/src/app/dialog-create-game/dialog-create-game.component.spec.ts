@@ -48,4 +48,11 @@ describe('DialogCreateGameComponent', () => {
     expect((<any>component).preGameService.CreateGame).toHaveBeenCalled();
     expect((<any>component).dialogRef.close).toHaveBeenCalled()
   })
+
+  it("should call closeDialog", () => {
+    var spyDialogRef = spyOn((<any>component).dialogRef, "close").and.callThrough();
+    component.closeDialog()
+    expect(spyDialogRef)
+    expect((<any>component).dialogRef.close).toHaveBeenCalled()
+  })
 });
