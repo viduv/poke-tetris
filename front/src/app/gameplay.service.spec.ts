@@ -131,6 +131,32 @@ describe('GameplayService', () => {
     expect((<any>service).grid).toEqual(gridTest1);
   });
 
+  it('should not move left when piece is already at last left column', () => {
+    let spySpawnNewPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+    });
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spyupdate = spyOn((<any>service), "update").and.callFake(() => {
+    });
+    let spyCollidesLeft = spyOn((<any>service), "collidesLeft").and.callThrough();
+
+    const cellsCount = 10 * 20;
+    let gridTest1: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    gridTest1[80] = {solid: false, color: "aqua"};
+    gridTest1[81] = {solid: false, color: "aqua"};
+    gridTest1[82] = {solid: false, color: "aqua"};
+    gridTest1[83] = {solid: false, color: "aqua"};
+    (<any>service).currentPiece = new Line(0, 5, (<any>service).gridSize);
+    service.start();
+    (<any>service).currentPiece.storeState();
+    expect((<any>service).grid).toEqual(gridTest1);
+    service.moveLeft();
+    expect((<any>service).grid).toEqual(gridTest1);
+    expect(spyCollidesLeft);
+    expect(spyCollidesLeft).toHaveBeenCalled();
+  });
+
   // MOVE RIGHT
 
   it('should move right when game is run and not lock', () => {
@@ -205,6 +231,32 @@ describe('GameplayService', () => {
     expect((<any>service).grid).toEqual(gridTest1);
     service.moveLeft();
     expect((<any>service).grid).toEqual(gridTest1);
+  });
+
+  it('should not move right when piece is already at last right column', () => {
+    let spySpawnNewPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+    });
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spyupdate = spyOn((<any>service), "update").and.callFake(() => {
+    });
+    let spyCollidesRight = spyOn((<any>service), "collidesRight").and.callThrough();
+
+    const cellsCount = 10 * 20;
+    let gridTest1: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    gridTest1[87] = {solid: false, color: "aqua"};
+    gridTest1[88] = {solid: false, color: "aqua"};
+    gridTest1[89] = {solid: false, color: "aqua"};
+    gridTest1[90] = {solid: false, color: "aqua"};
+    (<any>service).currentPiece = new Line(7, 5, (<any>service).gridSize);
+    service.start();
+    (<any>service).currentPiece.storeState();
+    expect((<any>service).grid).toEqual(gridTest1);
+    service.moveRight();
+    expect((<any>service).grid).toEqual(gridTest1);
+    expect(spyCollidesRight);
+    expect(spyCollidesRight).toHaveBeenCalled();
   });
 
   // ROTATE
@@ -411,5 +463,133 @@ describe('GameplayService', () => {
     service.start();
     (<any>service).grid = gridTest;
     expect((<any>service).generateSpectrum()).toEqual([2, 2, 2, 2, 1, 2, 2, 2, 2, 1]);
+  });
+
+  // COLLIDE
+
+  it('return false when piece collide with nothing', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 5, (<any>service).gridSize);
+    });
+    service.start();
+    service.update();
+    expect((<any>service).collides()).toBeFalse();
+  });
+
+  it('return true when piece collide with right border', ()=> {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(7, 5, (<any>service).gridSize);
+    });
+    service.start();
+    expect((<any>service).collidesRight()).toBeTrue();
+  });
+
+  it('return true when piece collide with left border', ()=> {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(-1, 5, (<any>service).gridSize);
+    });
+    service.start();
+    expect((<any>service).collidesLeft()).toBeTrue();
+  });
+
+  it('game is not over', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 5, (<any>service).gridSize);
+    });
+    service.start();
+    expect((<any>service).isGameOver()).toBeFalse();
+  });
+
+  it('game is over', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 0, (<any>service).gridSize);
+    });
+
+    const cellsCount = 10 * 20;
+    let gridTest: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: true, color: "red"}));
+
+    service.start();
+    (<any>service).grid = gridTest;
+    expect((<any>service).isGameOver()).toBeTrue();
+  });
+
+  it('should draw piece', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spyupdate = spyOn((<any>service), "update").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 6, (<any>service).gridSize);
+    });
+
+    const cellsCount = 10 * 20;
+    let gridTest1: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    let gridTest2: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    gridTest2[94] = {solid: false, color: "aqua"};
+    gridTest2[95] = {solid: false, color: "aqua"};
+    gridTest2[96] = {solid: false, color: "aqua"};
+    gridTest2[97] = {solid: false, color: "aqua"};
+
+    service.start();
+    (<any>service).grid = gridTest1;
+    (<any>service).drawPiece();
+    expect((<any>service).grid).toEqual(gridTest2);
+  });
+
+  it('should mark solid', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spyupdate = spyOn((<any>service), "update").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 6, (<any>service).gridSize);
+    });
+
+    const cellsCount = 10 * 20;
+    let gridTest1: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    let gridTest2: Array<Tile | undefined> = Array.apply(null, Array(cellsCount))
+      .map(() => ({solid: false, color: "transparent"}));
+    gridTest2[94] = {solid: true, color: "aqua"};
+    gridTest2[95] = {solid: true, color: "aqua"};
+    gridTest2[96] = {solid: true, color: "aqua"};
+    gridTest2[97] = {solid: true, color: "aqua"};
+
+    service.start();
+    (<any>service).grid = gridTest1;
+    (<any>service).drawPiece();
+    (<any>service).markSolid();
+    expect((<any>service).grid).toEqual(gridTest2);
+  });
+
+  it('should gris be empty', () => {
+    let spyStartInterval = spyOn((<any>service), "startInterval").and.callFake(() => {
+    });
+    let spyupdate = spyOn((<any>service), "update").and.callFake(() => {
+    });
+    let spySpawnPiece = spyOn((<any>service), "spawnNewPiece").and.callFake(() => {
+      (<any>service).currentPiece = new Line(4, 6, (<any>service).gridSize);
+    });
+
+    service.start();
+    service.update();
+    service.update();
+    service.update();
+    service.update();
+    service.clearGame();
+    expect((<any>service).grid).toEqual([]);
   });
 });

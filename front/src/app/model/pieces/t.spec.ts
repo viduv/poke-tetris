@@ -68,4 +68,18 @@ describe('T', () => {
     piece.clearState();
     expect((<any>piece).previousState).toBeNull();
   });
+
+  it('rotate to first rotation when state is last possible rotation', () => {
+    let piece = new T(4, 0, {height: 20, width: 10});
+
+    expect(Number(piece.rotation)).toEqual(PieceRotation.DEG_0);
+    piece.rotate();
+    expect(Number(piece.rotation)).toEqual(PieceRotation.DEG_90);
+    piece.rotate();
+    expect(Number(piece.rotation)).toEqual(PieceRotation.DEG_180);
+    piece.rotate();
+    expect(Number(piece.rotation)).toEqual(PieceRotation.DEG_270);
+    piece.rotate();
+    expect(Number(piece.rotation)).toEqual(PieceRotation.DEG_0);
+  })
 });
